@@ -1,0 +1,28 @@
+service: robotscraper
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  region: eu-west-2
+
+functions:
+  getLikes:
+    handler: src/index.getLikes
+    events:
+      - http:
+          path: api/getlikes
+          method: get
+          cors: true
+plugins:
+  - serverless-webpack
+  - axios
+  - cheerio
+  - serverless-offline
+
+package:
+  individually: true
+
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true

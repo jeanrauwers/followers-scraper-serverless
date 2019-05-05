@@ -1,0 +1,29 @@
+{
+  "name": "aws-lambdas",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "dev": "serverless offline start",
+    "deploy": "sls deploy"
+  },
+  "author": "Jean Rauwers",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "babel-loader": "^8.0.5",
+    "babel-plugin-source-map-support": "^2.0.1",
+    "serverless-dynamodb-local": "^0.2.37",
+    "serverless-offline": "^4.9.4",
+    "serverless-webpack": "^5.3.0",
+    "webpack": "^4.30.0",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "cheerio": "^1.0.0-rc.3",
+    "lowdb": "^1.0.0"
+  }
+}
