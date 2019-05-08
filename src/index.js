@@ -17,9 +17,7 @@ export const getLikes = async () => {
 		2
 	  )
 	};
-  };
-	
-export const scanTable = async (tableName) => {
+  }; export const scanTable = async (tableName) => {
     const params = {
         TableName: tableName,
     };

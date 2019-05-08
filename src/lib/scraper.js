@@ -75,18 +75,21 @@ export async function taskRunner() {
   };
 
   return await new Promise((resolve, reject) => {
-    dynamoDb.put(params, (error, data) => {
+    try{dynamoDb.put(params, (error, data) => {
       if (error) {
         console.log(`createChatMessage ERROR=${error.stack}`);
         resolve({
           statusCode: 400,
           error: `Could not create message: ${error.stack}`
         });
-      } else {
-        console.log(`createChatMessage data=${JSON.stringify(data)}`);
-        resolve({ statusCode: 200, body: JSON.stringify(params.Item) });
-      }
-    });
+        } else {
+          console.log(`createChatMessage data=${JSON.stringify(data)}`);
+          resolve({ statusCode: 200, body: JSON.stringify(params.Item) });
+        }
+      });
+
+    }catch{
+      err => console.log}
   });
 }
 
