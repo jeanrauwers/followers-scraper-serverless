@@ -1,6 +1,8 @@
 import axios from "axios";
 import cheerio from "cheerio";
 import accountConfig from "./account-configurations";
+import AWS from 'aws-sdk';
+const dynamoDb =  new AWS.DynamoDB.DocumentClient();
 
 export async function getHTML(url) {
   try {
@@ -56,26 +58,35 @@ export async function getTwitterCount() {
 export async function taskRunner() {
   const iCount = await getInstagramCount();
   const tCount = await getTwitterCount();
-  postDataToDynamo(iCount,tCount);
+  const now = new Date();
+  const currentDay = ("0" + now.getDate()).slice(-2);
+  const currentMonth = ("0" + (now.getMonth() + 1)).slice(-2);
+  const today = `${currentDay} - ${currentMonth} - ${now.getFullYear()}`;
+  const currentTime = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
+  const params = {
+    TableName: "likesapi",
+    Item: {
+      id: today + currentTime,
+      twitter: tCount,
+      instagram: iCount,
+      date: today,
+      updatedAt: currentTime
+    }
+  };
 
+  return await new Promise((resolve, reject) => {
+    dynamoDb.put(params, (error, data) => {
+      if (error) {
+        console.log(`createChatMessage ERROR=${error.stack}`);
+        resolve({
+          statusCode: 400,
+          error: `Could not create message: ${error.stack}`
+        });
+      } else {
+        console.log(`createChatMessage data=${JSON.stringify(data)}`);
+        resolve({ statusCode: 200, body: JSON.stringify(params.Item) });
+      }
+    });
+  });
 }
 
-export async function postDataToDynamo(iCount, tCount){
-	const dataObj = {
-		instagram: iCount,
-		twitter: tCount
-	  };
-	 axios({
-		  method: "post",
-		  url:
-			"https://ta71snvlm4.execute-api.eu-west-2.amazonaws.com/dev/api/likes",
-		  headers: {
-			"Content-Type": "application/json"
-		  },
-		  data: await JSON.stringify(dataObj)
-		})
-		  .then(res => console.log(res))
-		  .catch(err => console.error(err));
-		console.log("Posted Data!");
-	
-}

@@ -111,7 +111,7 @@ const accountConfig = {
 /*!****************************!*\
   !*** ./src/lib/scraper.js ***!
   \****************************/
-/*! exports provided: getHTML, getTwitterFollowers, getInstagramFollowers, getInstagramCount, getTwitterCount, taskRunner, postDataToDynamo */
+/*! exports provided: getHTML, getTwitterFollowers, getInstagramFollowers, getInstagramCount, getTwitterCount, taskRunner */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -122,7 +122,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getInstagramCount", function() { return getInstagramCount; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getTwitterCount", function() { return getTwitterCount; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "taskRunner", function() { return taskRunner; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "postDataToDynamo", function() { return postDataToDynamo; });
 /* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! source-map-support/register */ "source-map-support/register");
 /* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(source_map_support_register__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "axios");
@@ -130,10 +129,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var cheerio__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! cheerio */ "cheerio");
 /* harmony import */ var cheerio__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(cheerio__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _account_configurations__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./account-configurations */ "./src/lib/account-configurations.js");
+/* harmony import */ var aws_sdk__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! aws-sdk */ "aws-sdk");
+/* harmony import */ var aws_sdk__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(aws_sdk__WEBPACK_IMPORTED_MODULE_4__);
 
 
 
 
+
+const dynamoDb = new aws_sdk__WEBPACK_IMPORTED_MODULE_4___default.a.DynamoDB.DocumentClient();
 async function getHTML(url) {
   try {
     const {
@@ -184,23 +187,50 @@ async function getTwitterCount() {
 async function taskRunner() {
   const iCount = await getInstagramCount();
   const tCount = await getTwitterCount();
-  postDataToDynamo(iCount, tCount);
-}
-async function postDataToDynamo(iCount, tCount) {
-  const dataObj = {
-    instagram: iCount,
-    twitter: tCount
+  const now = new Date();
+  const currentDay = ("0" + now.getDate()).slice(-2);
+  const currentMonth = ("0" + (now.getMonth() + 1)).slice(-2);
+  const today = `${currentDay} - ${currentMonth} - ${now.getFullYear()}`;
+  const currentTime = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
+  const params = {
+    TableName: "likesapi",
+    Item: {
+      id: today + currentTime,
+      twitter: tCount,
+      instagram: iCount,
+      date: today,
+      updatedAt: currentTime
+    }
   };
-  axios__WEBPACK_IMPORTED_MODULE_1___default()({
-    method: "post",
-    url: "https://ta71snvlm4.execute-api.eu-west-2.amazonaws.com/dev/api/likes",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    data: await JSON.stringify(dataObj)
-  }).then(res => console.log(res)).catch(err => console.error(err));
-  console.log("Posted Data!");
+  return await new Promise((resolve, reject) => {
+    dynamoDb.put(params, (error, data) => {
+      if (error) {
+        console.log(`createChatMessage ERROR=${error.stack}`);
+        resolve({
+          statusCode: 400,
+          error: `Could not create message: ${error.stack}`
+        });
+      } else {
+        console.log(`createChatMessage data=${JSON.stringify(data)}`);
+        resolve({
+          statusCode: 200,
+          body: JSON.stringify(params.Item)
+        });
+      }
+    });
+  });
 }
+
+/***/ }),
+
+/***/ "aws-sdk":
+/*!**************************!*\
+  !*** external "aws-sdk" ***!
+  \**************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("aws-sdk");
 
 /***/ }),
 

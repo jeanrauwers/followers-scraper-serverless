@@ -17,13 +17,6 @@ provider:
       Resource: 'arn:aws:dynamodb:us-west-2:*:*'
 
 functions:
-  createDataOnDynamo:
-    handler: src/index.createDataOnDynamo
-    events:
-      - http:
-          path: api/likes
-          method: post
-          cors: true
   getLikes:
     handler: src/index.getLikes
     events:
