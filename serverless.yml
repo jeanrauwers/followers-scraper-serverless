@@ -4,13 +4,31 @@ provider:
   name: aws
   runtime: nodejs8.10
   region: eu-west-2
+  iamRoleStatements: # permissions for all of your functions can be set here
+    - Effect: Allow
+      Action: # Gives permission to DynamoDB tables in a specific region
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: 'arn:aws:dynamodb:us-west-2:*:*'
 
 functions:
+  createDataOnDynamo:
+    handler: src/index.createDataOnDynamo
+    events:
+      - http:
+          path: api/likes
+          method: post
+          cors: true
   getLikes:
     handler: src/index.getLikes
     events:
       - http:
-          path: api/getlikes
+          path: api/likes
           method: get
           cors: true
 plugins:
@@ -26,3 +44,25 @@ custom:
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
+
+resources: # CloudFormation template syntax
+  Resources:
+    likesapi:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: date
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+          - AttributeName: date
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: "likesapi"
+      

@@ -91,31 +91,88 @@ module.exports =
 /*!**********************!*\
   !*** ./src/index.js ***!
   \**********************/
-/*! exports provided: getLikes */
+/*! exports provided: getLikes, createDataOnDynamo, scanTable */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getLikes", function() { return getLikes; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createDataOnDynamo", function() { return createDataOnDynamo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "scanTable", function() { return scanTable; });
 /* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! source-map-support/register */ "source-map-support/register");
 /* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(source_map_support_register__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _lib_scraper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./lib/scraper */ "./src/lib/scraper.js");
+/* harmony import */ var aws_sdk__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! aws-sdk */ "aws-sdk");
+/* harmony import */ var aws_sdk__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(aws_sdk__WEBPACK_IMPORTED_MODULE_2__);
 
 
+
+const dynamoDb = new aws_sdk__WEBPACK_IMPORTED_MODULE_2___default.a.DynamoDB.DocumentClient();
 const getLikes = async () => {
-  const twitterTotalLikes = await Object(_lib_scraper__WEBPACK_IMPORTED_MODULE_1__["getTwitterCount"])();
-  const instagramTotalLikes = await Object(_lib_scraper__WEBPACK_IMPORTED_MODULE_1__["getInstagramCount"])();
+  const theData = await scanTable("likesapi");
   return await {
     statusCode: 200,
     headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Credentials': true
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": true
     },
     body: JSON.stringify({
-      twitter: twitterTotalLikes,
-      instagram: instagramTotalLikes
+      data: theData
     }, null, 2)
   };
+};
+const createDataOnDynamo = async (event, context, callback) => {
+  const data = JSON.parse(event.body);
+  const now = new Date();
+  const currentDay = ("0" + now.getDate()).slice(-2);
+  const currentMonth = ("0" + (now.getMonth() + 1)).slice(-2);
+  const today = `${currentDay} - ${currentMonth} - ${now.getFullYear()}`;
+  const currentTime = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
+
+  if (typeof data !== "object") {
+    console.error("Validation Error - type of data is not String");
+    callback(new Error(`Couldn't create the data.`));
+    return;
+  }
+
+  const params = {
+    TableName: "likesapi",
+    Item: {
+      id: "1",
+      twitter: data.twitter,
+      instagram: data.instagram,
+      date: today,
+      updatedAt: currentTime
+    }
+  };
+  dynamoDb.put(params, (error, result) => {
+    if (error) {
+      console.log(error);
+      callback(new Error(`Couldn't create the data.`));
+      return;
+    }
+
+    const response = {
+      statusCode: 200,
+      body: JSON.stringify(result.Item)
+    };
+    callback(null, response);
+  });
+};
+const scanTable = async tableName => {
+  const params = {
+    TableName: tableName
+  };
+  let scanResults = [];
+  let items;
+
+  do {
+    items = await dynamoDb.scan(params).promise();
+    items.Items.forEach(item => scanResults.push(item));
+    params.ExclusiveStartKey = items.LastEvaluatedKey;
+  } while (typeof items.LastEvaluatedKey != "undefined");
+
+  return scanResults;
 };
 
 /***/ }),
@@ -164,7 +221,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
- // import db from './db';
 
 async function getHTML(url) {
   try {
@@ -212,7 +268,36 @@ async function getTwitterCount() {
   } catch (err) {
     console.log(err);
   }
-}
+} // export async function taskRunner() {
+// 	const [iCount, tCount] = await Promise.all([
+// 		getInstagramCount(),
+// 		getTwitterCount()
+// 	]);
+// 	db.get('twitter')
+// 		.push({
+// 			date: Date.now(),
+// 			count: tCount
+// 		})
+// 		.write();
+// 	db.get('instagram')
+// 		.push({
+// 			date: Date.now(),
+// 			count: iCount
+// 		})
+// 		.write();
+// 	console.log('Done!');
+// }
+
+/***/ }),
+
+/***/ "aws-sdk":
+/*!**************************!*\
+  !*** external "aws-sdk" ***!
+  \**************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("aws-sdk");
 
 /***/ }),
 
