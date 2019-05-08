@@ -31,6 +31,13 @@ functions:
           path: api/likes
           method: get
           cors: true
+  taskRunner:
+    handler: src/lib/scraper.taskRunner
+    events:
+      - http:
+          path: api/likes/update
+          method: get
+          cors: true
 plugins:
   - serverless-webpack
   - axios

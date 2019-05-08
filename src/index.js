@@ -1,10 +1,7 @@
-import { getInstagramCount, getTwitterCount } from './lib/scraper';
 import AWS from 'aws-sdk';
 const dynamoDb =  new AWS.DynamoDB.DocumentClient();
 
-
 export const getLikes = async () => {
-
 	const theData = await scanTable("likesapi");
 	return await {
 	  statusCode: 200,
@@ -22,50 +19,8 @@ export const getLikes = async () => {
 	};
   };
 
+
   
-  export const createDataOnDynamo = async (event, context, callback) => {
-		const data = JSON.parse(event.body);
-		const now = new Date();
-		const currentDay = ("0" + now.getDate()).slice(-2);
-		const currentMonth = ("0" + (now.getMonth() + 1)).slice(-2);
-		const today = `${(currentDay)} - ${(currentMonth)} - ${now.getFullYear()}`;
-		const currentTime = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
-
-	
-
-	if (typeof data !== "object") {
-	  console.error("Validation Error - type of data is not String");
-	  callback(new Error(`Couldn't create the data.`));
-	  return;
-	}
-  
-	const params = {
-	  TableName: "likesapi",
-	  Item: {
-		id:"1",
-		twitter:data.twitter,
-		instagram:data.instagram,
-		date: today,
-		updatedAt: currentTime
-	  }
-	};
-
-	dynamoDb.put(params, (error, result) => {
-		if (error) {
-			console.log(error);
-		  callback(new Error(`Couldn't create the data.`));
-		  return;
-		}
-	  
-		const response = {
-			statusCode: 200,
-		  body: JSON.stringify(result.Item)
-		};
-			  
-		callback(null, response);
-	  });
-	  
-  };
 
 export const scanTable = async (tableName) => {
     const params = {
@@ -82,4 +37,52 @@ export const scanTable = async (tableName) => {
 
     return scanResults;
 
+};
+
+
+export const createDataOnDynamo = async (event, context, callback) => {
+	const data = JSON.parse(event.body);
+	console.log(data)
+	const now = new Date();
+	const currentDay = ("0" + now.getDate()).slice(-2);
+	const currentMonth = ("0" + (now.getMonth() + 1)).slice(-2);
+	const today = `${(currentDay)} - ${(currentMonth)} - ${now.getFullYear()}`;
+	const currentTime = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
+
+	console.log(today)
+
+
+
+if (typeof data !== "object") {
+	console.error("Validation Error - type of data is not String");
+	callback(new Error(`Couldn't create the data.`));
+	return;
+}
+
+const params = {
+	TableName: "likesapi",
+	Item: {
+	id:today+currentTime,
+	twitter:data.twitter,
+	instagram:data.instagram,
+	date: today,
+	updatedAt: currentTime
+	}
+};
+
+return await new Promise((resolve, reject) => {
+	dynamoDb.put(params, (error, data) => {
+			if (error) {
+			console.log(`createChatMessage ERROR=${error.stack}`);
+					resolve({
+					statusCode: 400,
+					error: `Could not create message: ${error.stack}`
+					});
+
+			} else {
+			console.log(`createChatMessage data=${JSON.stringify(data)}`);
+			resolve({ statusCode: 200, body: JSON.stringify(params.Item) });
+			}
+	});
+});	
 };
