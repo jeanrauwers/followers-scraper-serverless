@@ -1,8 +1,10 @@
 import AWS from 'aws-sdk';
 const dynamoDb =  new AWS.DynamoDB.DocumentClient();
+import  aggregate  from "./lib/aggregate"
 
 export const getLikes = async () => {
 	const theData = await scanTable("likesapi");
+	const newData = await aggregate(theData);
 	return await {
 	  statusCode: 200,
 	  headers: {
@@ -11,7 +13,7 @@ export const getLikes = async () => {
 	  },
 	  body: JSON.stringify(
 		{
-		  data:theData
+		  data:newData
 		},
 		null,
 		2
@@ -29,7 +31,7 @@ export const getLikes = async () => {
         items.Items.forEach((item) => scanResults.push(item));
         params.ExclusiveStartKey  = items.LastEvaluatedKey;
     }while(typeof items.LastEvaluatedKey != "undefined");
-
+		
     return scanResults;
 
 };

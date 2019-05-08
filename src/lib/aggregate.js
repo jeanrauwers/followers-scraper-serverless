@@ -16,7 +16,7 @@ export default function aggregate(scrapes) {
 				: ``;
 			const key = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}${optionalHour}`;
 			return {
-				key,
+				
 				...scrape
 			};
 		})

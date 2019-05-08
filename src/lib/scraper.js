@@ -63,6 +63,7 @@ export async function taskRunner() {
   const currentMonth = ("0" + (now.getMonth() + 1)).slice(-2);
   const today = `${currentDay} - ${currentMonth} - ${now.getFullYear()}`;
   const currentTime = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
+
   const params = {
     TableName: "likesapi",
     Item: {
