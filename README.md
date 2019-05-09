@@ -13,7 +13,7 @@ Followers scraper on AWS Serverless
 
 ## Usage
 
-You need to have your own aws-cli with your credentials configured and than you can run $npm run deploy  to deploy the lamda to AWS
+You need to have your own [aws-cli](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html) with your credentials configured and than you can run $npm run deploy  to deploy the lambda to AWS
 
 The scraper lambda works based on CloudWatch schedule that you can setup at your AWS console.
 
