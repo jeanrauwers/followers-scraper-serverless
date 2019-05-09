@@ -4,3 +4,8 @@ jspm_packages
 
 # Serverless directories
 .serverless
+notes-app-api
+
+
+
+package-lock
