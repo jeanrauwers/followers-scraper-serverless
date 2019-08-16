@@ -68,7 +68,7 @@ export async function taskRunner() {
     const params = {
         TableName: 'likesapi',
         Item: {
-            id: today + currentTime,
+            id: `${iCount}${tCount}${IcurrentTime}`,
             twitter: tCount,
             instagram: iCount,
             date: today,
