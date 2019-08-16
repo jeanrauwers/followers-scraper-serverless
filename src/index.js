@@ -4,7 +4,7 @@ import aggregate from './lib/aggregate'
 
 export const getLikes = async () => {
     try {
-        const theData = await scanTable('likesapi')
+        const theData = await scanTable('socialMedia')
         const newData = await aggregate(theData)
         return await {
             statusCode: 200,
@@ -14,7 +14,7 @@ export const getLikes = async () => {
             },
             body: JSON.stringify(
                 {
-                    data: newData,
+                    data: theData,
                 },
                 null,
                 2
@@ -27,17 +27,14 @@ export const getLikes = async () => {
 export const scanTable = async tableName => {
     const params = {
         TableName: tableName,
+        Limit: 10,
     }
 
     let scanResults = []
     let items
     try {
-        do {
-            items = await dynamoDb.scan(params).promise()
-            items.Items.forEach(item => scanResults.push(item))
-            params.ExclusiveStartKey = items.LastEvaluatedKey
-        } while (typeof items.LastEvaluatedKey != 'undefined')
-
+        items = await dynamoDb.scan(params).promise()
+        items.Items.forEach(item => scanResults.push(item))
         return scanResults
     } catch (err) {
         console.error(err)

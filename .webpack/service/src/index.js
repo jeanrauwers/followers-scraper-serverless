@@ -109,7 +109,7 @@ const dynamoDb = new aws_sdk__WEBPACK_IMPORTED_MODULE_1___default.a.DynamoDB.Doc
 
 const getLikes = async () => {
   try {
-    const theData = await scanTable('likesapi');
+    const theData = await scanTable('socialMedia');
     const newData = await Object(_lib_aggregate__WEBPACK_IMPORTED_MODULE_2__["default"])(theData);
     return await {
       statusCode: 200,
@@ -118,7 +118,7 @@ const getLikes = async () => {
         'Access-Control-Allow-Credentials': true
       },
       body: JSON.stringify({
-        data: newData
+        data: theData
       }, null, 2)
     };
   } catch (err) {
@@ -127,18 +127,15 @@ const getLikes = async () => {
 };
 const scanTable = async tableName => {
   const params = {
-    TableName: tableName
+    TableName: tableName,
+    Limit: 10
   };
   let scanResults = [];
   let items;
 
   try {
-    do {
-      items = await dynamoDb.scan(params).promise();
-      items.Items.forEach(item => scanResults.push(item));
-      params.ExclusiveStartKey = items.LastEvaluatedKey;
-    } while (typeof items.LastEvaluatedKey != 'undefined');
-
+    items = await dynamoDb.scan(params).promise();
+    items.Items.forEach(item => scanResults.push(item));
     return scanResults;
   } catch (err) {
     console.error(err);

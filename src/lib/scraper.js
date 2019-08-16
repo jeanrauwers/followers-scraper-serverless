@@ -62,16 +62,16 @@ export async function taskRunner() {
     const now = new Date()
     const currentDay = ('0' + now.getDate()).slice(-2)
     const currentMonth = ('0' + (now.getMonth() + 1)).slice(-2)
-    const today = `${currentDay} - ${currentMonth} - ${now.getFullYear()}`
-    const currentTime = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`
+    const today = `${currentDay}${currentMonth}${now.getFullYear()}`
+    const currentTime = `${now.getHours()}${now.getMinutes()}${now.getSeconds()}`
 
     const params = {
-        TableName: 'likesapi',
+        TableName: 'socialMedia',
         Item: {
-            id: `${iCount}${tCount}${currentTime}`,
+            ID: `${iCount}${tCount}${currentTime}`,
             twitter: tCount,
             instagram: iCount,
-            date: today,
+            SORT_DATE: today,
             updatedAt: currentTime,
         },
     }
