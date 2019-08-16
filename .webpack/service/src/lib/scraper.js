@@ -101,7 +101,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const accountConfig = {
   twitterUrl: 'https://twitter.com/jeanrauwers',
-  instagramUlr: 'https://instagram.com/jeanrauwers'
+  instagramUlr: 'https://instagram.com/dev.jeanrauwers'
 };
 /* harmony default export */ __webpack_exports__["default"] = (accountConfig);
 

@@ -108,18 +108,22 @@ __webpack_require__.r(__webpack_exports__);
 const dynamoDb = new aws_sdk__WEBPACK_IMPORTED_MODULE_1___default.a.DynamoDB.DocumentClient();
 
 const getLikes = async () => {
-  const theData = await scanTable("likesapi");
-  const newData = await Object(_lib_aggregate__WEBPACK_IMPORTED_MODULE_2__["default"])(theData);
-  return await {
-    statusCode: 200,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Credentials": true
-    },
-    body: JSON.stringify({
-      data: newData
-    }, null, 2)
-  };
+  try {
+    const theData = await scanTable('likesapi');
+    const newData = await Object(_lib_aggregate__WEBPACK_IMPORTED_MODULE_2__["default"])(theData);
+    return await {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true
+      },
+      body: JSON.stringify({
+        data: newData
+      }, null, 2)
+    };
+  } catch (err) {
+    console.error(err);
+  }
 };
 const scanTable = async tableName => {
   const params = {
@@ -128,13 +132,17 @@ const scanTable = async tableName => {
   let scanResults = [];
   let items;
 
-  do {
-    items = await dynamoDb.scan(params).promise();
-    items.Items.forEach(item => scanResults.push(item));
-    params.ExclusiveStartKey = items.LastEvaluatedKey;
-  } while (typeof items.LastEvaluatedKey != "undefined");
+  try {
+    do {
+      items = await dynamoDb.scan(params).promise();
+      items.Items.forEach(item => scanResults.push(item));
+      params.ExclusiveStartKey = items.LastEvaluatedKey;
+    } while (typeof items.LastEvaluatedKey != 'undefined');
 
-  return scanResults;
+    return scanResults;
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 /***/ }),
