@@ -151,7 +151,7 @@ async function getTwitterFollowers(html) {
   try {
     const $ = cheerio__WEBPACK_IMPORTED_MODULE_2___default.a.load(html);
     const span = $('[data-nav="followers"] .ProfileNav-value');
-    return span.data("count");
+    return span.data('count');
   } catch (err) {
     console.log(err);
   }
@@ -188,12 +188,12 @@ async function taskRunner() {
   const iCount = await getInstagramCount();
   const tCount = await getTwitterCount();
   const now = new Date();
-  const currentDay = ("0" + now.getDate()).slice(-2);
-  const currentMonth = ("0" + (now.getMonth() + 1)).slice(-2);
+  const currentDay = ('0' + now.getDate()).slice(-2);
+  const currentMonth = ('0' + (now.getMonth() + 1)).slice(-2);
   const today = `${currentDay} - ${currentMonth} - ${now.getFullYear()}`;
   const currentTime = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
   const params = {
-    TableName: "likesapi",
+    TableName: 'likesapi',
     Item: {
       id: today + currentTime,
       twitter: tCount,
