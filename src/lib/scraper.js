@@ -2,7 +2,7 @@ import axios from 'axios'
 import cheerio from 'cheerio'
 import accountConfig from './account-configurations'
 import AWS from 'aws-sdk'
-import { json } from 'graphlib';
+
 const dynamoDb = new AWS.DynamoDB.DocumentClient()
 
 export async function getHTML(url) {
@@ -82,6 +82,7 @@ export async function taskRunner() {
     const tCount = await getTwitterCount()
     const yCount = await getYoutubeCount()
 
+    //TODO: Create function to do Date
     const date = new Date()
     date.toLocaleString('en-GB', {
         hour: '2-digit',
@@ -95,13 +96,13 @@ export async function taskRunner() {
     date.toLocaleString('en-GB', { hour12: false, timeZone: 'Europe/London' })
 
     const params = {
-        TableName: 'socialMedia',
+        TableName: 'apiSocialMedia',
         Item: {
-            ID: `${today}${currentTime}`,
+            id: `${today}${currentTime}`,
             twitter: tCount,
             instagram: iCount,
             youtube:yCount,
-            SORT_DATE: today,
+            date: today,
             updatedAt: currentTime,
         },
     }

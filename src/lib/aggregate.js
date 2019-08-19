@@ -1,6 +1,7 @@
 function isInLastSixHours(timestamp) {
-	const sixHoursAgo = 1000 * 60 * 60 * 6;
-	if (Date.now() - timestamp < sixHoursAgo) {
+
+	const defineTimer = 1000 * 60 * 60 * 24; // 24 hours
+	if (Date.now() - timestamp < defineTimer) {
 		return true;
 	}
 	return false;

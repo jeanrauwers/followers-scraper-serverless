@@ -1,15 +1,15 @@
 {
   "service": {
-    "service": "robotscraper",
+    "service": "socialmediascraper",
     "serviceObject": {
-      "name": "robotscraper"
+      "name": "socialmediascraper"
     },
     "provider": {
       "stage": "dev",
-      "region": "eu-west-2",
       "variableSyntax": "\\${([ ~:a-zA-Z0-9._@'\",\\-\\/\\(\\)*]+?)}",
       "name": "aws",
       "runtime": "nodejs8.10",
+      "region": "eu-west-2",
       "iamRoleStatements": [
         {
           "Effect": "Allow",
@@ -48,13 +48,13 @@
           "GetLikesLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/robotscraper-dev-getLikes"
+              "LogGroupName": "/aws/lambda/socialmediascraper-dev-getLikes"
             }
           },
           "TaskRunnerLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/robotscraper-dev-taskRunner"
+              "LogGroupName": "/aws/lambda/socialmediascraper-dev-taskRunner"
             }
           },
           "IamRoleLambdaExecution": {
@@ -83,7 +83,7 @@
                       "-",
                       [
                         "dev",
-                        "robotscraper",
+                        "socialmediascraper",
                         "lambda"
                       ]
                     ]
@@ -98,10 +98,7 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/robotscraper-dev-getLikes:*"
-                          },
-                          {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/robotscraper-dev-taskRunner:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/socialmediascraper-dev*:*"
                           }
                         ]
                       },
@@ -112,10 +109,7 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/robotscraper-dev-getLikes:*:*"
-                          },
-                          {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/robotscraper-dev-taskRunner:*:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/socialmediascraper-dev*:*:*"
                           }
                         ]
                       },
@@ -131,7 +125,7 @@
                 "Fn::Join": [
                   "-",
                   [
-                    "robotscraper",
+                    "socialmediascraper",
                     "dev",
                     {
                       "Ref": "AWS::Region"
@@ -149,9 +143,9 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/robotscraper/dev/1566198376163-2019-08-19T07:06:16.163Z/getLikes.zip"
+                "S3Key": "serverless/socialmediascraper/dev/1566214522893-2019-08-19T11:35:22.893Z/getLikes.zip"
               },
-              "FunctionName": "robotscraper-dev-getLikes",
+              "FunctionName": "socialmediascraper-dev-getLikes",
               "Handler": "src/index.getLikes",
               "MemorySize": 1024,
               "Role": {
@@ -168,14 +162,14 @@
               "IamRoleLambdaExecution"
             ]
           },
-          "GetLikesLambdaVersion10rijJTwJYYbeN9lLj9AUbI2M4fVBS2M4hma9ojjslU": {
+          "GetLikesLambdaVersionW4OLlhsM0bixyzGp5q78DBwkgn0NMUKvMZq9BAE704": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GetLikesLambdaFunction"
               },
-              "CodeSha256": "dl8KLzLz6MUNsMGOyiaWvDHDrfmwt1rdUmK4Oxd+0ro="
+              "CodeSha256": "+EQz1/ZFaz01dtbFpnwd9Tc8pYBRdJlMgagmHqMJlSk="
             }
           },
           "TaskRunnerLambdaFunction": {
@@ -185,9 +179,9 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/robotscraper/dev/1566198376163-2019-08-19T07:06:16.163Z/taskRunner.zip"
+                "S3Key": "serverless/socialmediascraper/dev/1566214522893-2019-08-19T11:35:22.893Z/taskRunner.zip"
               },
-              "FunctionName": "robotscraper-dev-taskRunner",
+              "FunctionName": "socialmediascraper-dev-taskRunner",
               "Handler": "src/lib/scraper.taskRunner",
               "MemorySize": 1024,
               "Role": {
@@ -204,20 +198,20 @@
               "IamRoleLambdaExecution"
             ]
           },
-          "TaskRunnerLambdaVersionWWERc9UcxcYCAc5ArNJZOSldC5K8qBVztV0o2YT2Veg": {
+          "TaskRunnerLambdaVersionGGkEpc5YL3DqhiIiiz2uFYcxshoKyKGwCwoarsWHrE": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "TaskRunnerLambdaFunction"
               },
-              "CodeSha256": "jN+h+snDGxq6HBxCf/0IXxfiSKB76JeJECUrmdOfFPk="
+              "CodeSha256": "H9+1+6/gCvzO7q6OYXal/DgXWjf57FiJlsCFr8P95tk="
             }
           },
           "ApiGatewayRestApi": {
             "Type": "AWS::ApiGateway::RestApi",
             "Properties": {
-              "Name": "dev-robotscraper",
+              "Name": "dev-socialmediascraper",
               "EndpointConfiguration": {
                 "Types": [
                   "EDGE"
@@ -444,7 +438,7 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayDeployment1566198361182": {
+          "ApiGatewayDeployment1566214517410": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -469,17 +463,7 @@
                 ]
               },
               "Action": "lambda:InvokeFunction",
-              "Principal": {
-                "Fn::Join": [
-                  "",
-                  [
-                    "apigateway.",
-                    {
-                      "Ref": "AWS::URLSuffix"
-                    }
-                  ]
-                ]
-              },
+              "Principal": "apigateway.amazonaws.com",
               "SourceArn": {
                 "Fn::Join": [
                   "",
@@ -516,17 +500,7 @@
                 ]
               },
               "Action": "lambda:InvokeFunction",
-              "Principal": {
-                "Fn::Join": [
-                  "",
-                  [
-                    "apigateway.",
-                    {
-                      "Ref": "AWS::URLSuffix"
-                    }
-                  ]
-                ]
-              },
+              "Principal": "apigateway.amazonaws.com",
               "SourceArn": {
                 "Fn::Join": [
                   "",
@@ -581,7 +555,7 @@
                 "ReadCapacityUnits": 1,
                 "WriteCapacityUnits": 1
               },
-              "TableName": "socialMedia"
+              "TableName": "apiSocialMedia"
             }
           }
         },
@@ -594,13 +568,13 @@
           "GetLikesLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GetLikesLambdaVersion10rijJTwJYYbeN9lLj9AUbI2M4fVBS2M4hma9ojjslU"
+              "Ref": "GetLikesLambdaVersionW4OLlhsM0bixyzGp5q78DBwkgn0NMUKvMZq9BAE704"
             }
           },
           "TaskRunnerLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "TaskRunnerLambdaVersionWWERc9UcxcYCAc5ArNJZOSldC5K8qBVztV0o2YT2Veg"
+              "Ref": "TaskRunnerLambdaVersionGGkEpc5YL3DqhiIiiz2uFYcxshoKyKGwCwoarsWHrE"
             }
           },
           "ServiceEndpoint": {
@@ -665,9 +639,7 @@
     },
     "plugins": [
       "serverless-webpack",
-      "axios",
-      "cheerio",
-      "serverless-offline"
+      "cheerio"
     ],
     "pluginsData": {},
     "functions": {
@@ -701,7 +673,7 @@
             }
           }
         ],
-        "name": "robotscraper-dev-getLikes",
+        "name": "socialmediascraper-dev-getLikes",
         "package": {
           "artifact": ".serverless/getLikes.zip"
         },
@@ -740,7 +712,7 @@
             }
           }
         ],
-        "name": "robotscraper-dev-taskRunner",
+        "name": "socialmediascraper-dev-taskRunner",
         "package": {
           "artifact": ".serverless/taskRunner.zip"
         },
@@ -780,17 +752,18 @@
               "ReadCapacityUnits": 1,
               "WriteCapacityUnits": 1
             },
-            "TableName": "socialMedia"
+            "TableName": "apiSocialMedia"
           }
         }
       },
       "Outputs": {}
     },
+    "serviceFilename": "serverless.yml",
     "layers": {}
   },
   "package": {
     "individually": true,
-    "artifactDirectoryName": "serverless/robotscraper/dev/1566198376163-2019-08-19T07:06:16.163Z",
+    "artifactDirectoryName": "serverless/socialmediascraper/dev/1566214522893-2019-08-19T11:35:22.893Z",
     "artifact": ""
   }
 }

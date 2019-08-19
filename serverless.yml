@@ -1,4 +1,4 @@
-service: robotscraper
+service: socialmediascraper
 
 provider:
     name: aws
@@ -33,9 +33,8 @@ functions:
                   cors: true
 plugins:
     - serverless-webpack
-    - axios
-    - cheerio
     - serverless-offline
+    - cheerio
 
 package:
     individually: true
@@ -64,4 +63,4 @@ resources: # CloudFormation template syntax
                 ProvisionedThroughput:
                     ReadCapacityUnits: 1
                     WriteCapacityUnits: 1
-                TableName: 'socialMedia'
+                TableName: 'apiSocialMedia'

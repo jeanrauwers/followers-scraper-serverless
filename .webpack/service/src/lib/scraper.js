@@ -1,5 +1,4 @@
-module.exports =
-/******/ (function(modules) { // webpackBootstrap
+(function(e, a) { for(var i in a) e[i] = a[i]; }(exports, /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -134,9 +133,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _account_configurations__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./account-configurations */ "./src/lib/account-configurations.js");
 /* harmony import */ var aws_sdk__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! aws-sdk */ "aws-sdk");
 /* harmony import */ var aws_sdk__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(aws_sdk__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var graphlib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! graphlib */ "graphlib");
-/* harmony import */ var graphlib__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(graphlib__WEBPACK_IMPORTED_MODULE_5__);
-
 
 
 
@@ -211,7 +207,8 @@ async function getTwitterCount() {
 async function taskRunner() {
   const iCount = await getInstagramCount();
   const tCount = await getTwitterCount();
-  const yCount = await getYoutubeCount();
+  const yCount = await getYoutubeCount(); //TODO: Create function to do Date
+
   const date = new Date();
   date.toLocaleString('en-GB', {
     hour: '2-digit',
@@ -227,13 +224,13 @@ async function taskRunner() {
     timeZone: 'Europe/London'
   });
   const params = {
-    TableName: 'socialMedia',
+    TableName: 'apiSocialMedia',
     Item: {
-      ID: `${today}${currentTime}`,
+      id: `${today}${currentTime}`,
       twitter: tCount,
       instagram: iCount,
       youtube: yCount,
-      SORT_DATE: today,
+      date: today,
       updatedAt: currentTime
     }
   };
@@ -294,17 +291,6 @@ module.exports = require("cheerio");
 
 /***/ }),
 
-/***/ "graphlib":
-/*!***************************!*\
-  !*** external "graphlib" ***!
-  \***************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = require("graphlib");
-
-/***/ }),
-
 /***/ "source-map-support/register":
 /*!**********************************************!*\
   !*** external "source-map-support/register" ***!
@@ -316,5 +302,5 @@ module.exports = require("source-map-support/register");
 
 /***/ })
 
-/******/ });
+/******/ })));
 //# sourceMappingURL=scraper.js.map

@@ -1,5 +1,4 @@
-module.exports =
-/******/ (function(modules) { // webpackBootstrap
+(function(e, a) { for(var i in a) e[i] = a[i]; }(exports, /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -105,12 +104,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib_aggregate__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./lib/aggregate */ "./src/lib/aggregate.js");
 
 
-const dynamoDb = new aws_sdk__WEBPACK_IMPORTED_MODULE_1___default.a.DynamoDB.DocumentClient();
 
+const dynamoDb = new aws_sdk__WEBPACK_IMPORTED_MODULE_1___default.a.DynamoDB.DocumentClient();
 const getLikes = async () => {
   try {
-    const theData = await scanTable('socialMedia');
-    const newData = await Object(_lib_aggregate__WEBPACK_IMPORTED_MODULE_2__["default"])(theData);
+    const theData = await scanTable('apiSocialMedia');
+    const filteredData = await Object(_lib_aggregate__WEBPACK_IMPORTED_MODULE_2__["default"])(theData);
     return await {
       statusCode: 200,
       headers: {
@@ -118,7 +117,7 @@ const getLikes = async () => {
         'Access-Control-Allow-Credentials': true
       },
       body: JSON.stringify({
-        data: theData
+        data: filteredData
       }, null, 2)
     };
   } catch (err) {
@@ -159,9 +158,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function isInLastSixHours(timestamp) {
-  const sixHoursAgo = 1000 * 60 * 60 * 6;
+  const defineTimer = 1000 * 60 * 60 * 24; // 24 hours
 
-  if (Date.now() - timestamp < sixHoursAgo) {
+  if (Date.now() - timestamp < defineTimer) {
     return true;
   }
 
@@ -210,5 +209,5 @@ module.exports = require("source-map-support/register");
 
 /***/ })
 
-/******/ });
+/******/ })));
 //# sourceMappingURL=index.js.map
