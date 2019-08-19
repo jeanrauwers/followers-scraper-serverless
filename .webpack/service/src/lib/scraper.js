@@ -101,7 +101,8 @@ __webpack_require__.r(__webpack_exports__);
 
 const accountConfig = {
   twitterUrl: 'https://twitter.com/jeanrauwers',
-  instagramUlr: 'https://instagram.com/dev.jeanrauwers'
+  instagramUlr: 'https://instagram.com/dev.jeanrauwers',
+  youtubeUrl: 'https://www.youtube.com/user/jeanrauwers'
 };
 /* harmony default export */ __webpack_exports__["default"] = (accountConfig);
 
@@ -111,14 +112,16 @@ const accountConfig = {
 /*!****************************!*\
   !*** ./src/lib/scraper.js ***!
   \****************************/
-/*! exports provided: getHTML, getTwitterFollowers, getInstagramFollowers, getInstagramCount, getTwitterCount, taskRunner */
+/*! exports provided: getHTML, getYoutubeFollowers, getTwitterFollowers, getInstagramFollowers, getYoutubeCount, getInstagramCount, getTwitterCount, taskRunner */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getHTML", function() { return getHTML; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getYoutubeFollowers", function() { return getYoutubeFollowers; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getTwitterFollowers", function() { return getTwitterFollowers; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getInstagramFollowers", function() { return getInstagramFollowers; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getYoutubeCount", function() { return getYoutubeCount; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getInstagramCount", function() { return getInstagramCount; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getTwitterCount", function() { return getTwitterCount; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "taskRunner", function() { return taskRunner; });
@@ -131,6 +134,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _account_configurations__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./account-configurations */ "./src/lib/account-configurations.js");
 /* harmony import */ var aws_sdk__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! aws-sdk */ "aws-sdk");
 /* harmony import */ var aws_sdk__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(aws_sdk__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var graphlib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! graphlib */ "graphlib");
+/* harmony import */ var graphlib__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(graphlib__WEBPACK_IMPORTED_MODULE_5__);
+
 
 
 
@@ -143,6 +149,15 @@ async function getHTML(url) {
       data: html
     } = await axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(url);
     return html;
+  } catch (err) {
+    console.log(err);
+  }
+}
+async function getYoutubeFollowers(html) {
+  try {
+    const $ = cheerio__WEBPACK_IMPORTED_MODULE_2___default.a.load(html);
+    const subsBtn = $('.yt-subscription-button-subscriber-count-branded-horizontal');
+    return parseInt(subsBtn[0].attribs['title']);
   } catch (err) {
     console.log(err);
   }
@@ -162,6 +177,15 @@ async function getInstagramFollowers(html) {
     const dataInString = $('script[type="application/ld+json"]').html();
     const pageObject = JSON.parse(dataInString);
     return parseInt(pageObject.mainEntityofPage.interactionStatistic.userInteractionCount);
+  } catch (err) {
+    console.log(err);
+  }
+}
+async function getYoutubeCount() {
+  try {
+    const html = await getHTML(_account_configurations__WEBPACK_IMPORTED_MODULE_3__["default"].youtubeUrl);
+    const youtubeCount = await getYoutubeFollowers(html);
+    return youtubeCount;
   } catch (err) {
     console.log(err);
   }
@@ -187,17 +211,28 @@ async function getTwitterCount() {
 async function taskRunner() {
   const iCount = await getInstagramCount();
   const tCount = await getTwitterCount();
-  const now = new Date();
-  const currentDay = ('0' + now.getDate()).slice(-2);
-  const currentMonth = ('0' + (now.getMonth() + 1)).slice(-2);
-  const today = `${currentDay}${currentMonth}${now.getFullYear()}`;
-  const currentTime = `${now.getHours()}${now.getMinutes()}${now.getSeconds()}`;
+  const yCount = await getYoutubeCount();
+  const date = new Date();
+  date.toLocaleString('en-GB', {
+    hour: '2-digit',
+    hour12: false,
+    timeZone: 'Europe/London'
+  });
+  const currentDay = ('0' + date.getDate()).slice(-2);
+  const currentMonth = ('0' + (date.getMonth() + 1)).slice(-2);
+  const today = `${currentDay}${currentMonth}${date.getFullYear()}`;
+  const currentTime = `${date.getHours()}${date.getMinutes()}${date.getSeconds()}`;
+  date.toLocaleString('en-GB', {
+    hour12: false,
+    timeZone: 'Europe/London'
+  });
   const params = {
     TableName: 'socialMedia',
     Item: {
-      ID: `${iCount}${tCount}${currentTime}`,
+      ID: `${today}${currentTime}`,
       twitter: tCount,
       instagram: iCount,
+      youtube: yCount,
       SORT_DATE: today,
       updatedAt: currentTime
     }
@@ -207,12 +242,11 @@ async function taskRunner() {
       dynamoDb.put(params, (error, data) => {
         if (error) {
           console.log(`createChatMessage ERROR=${error.stack}`);
-          resolve({
+          reject({
             statusCode: 400,
             error: `Could not create message: ${error.stack}`
           });
         } else {
-          console.log(`createChatMessage data=${JSON.stringify(data)}`);
           resolve({
             statusCode: 200,
             body: JSON.stringify(params.Item)
@@ -257,6 +291,17 @@ module.exports = require("axios");
 /***/ (function(module, exports) {
 
 module.exports = require("cheerio");
+
+/***/ }),
+
+/***/ "graphlib":
+/*!***************************!*\
+  !*** external "graphlib" ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("graphlib");
 
 /***/ }),
 

@@ -2,12 +2,23 @@ import axios from 'axios'
 import cheerio from 'cheerio'
 import accountConfig from './account-configurations'
 import AWS from 'aws-sdk'
+import { json } from 'graphlib';
 const dynamoDb = new AWS.DynamoDB.DocumentClient()
 
 export async function getHTML(url) {
     try {
         const { data: html } = await axios.get(url)
         return html
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+export async function getYoutubeFollowers(html) {
+    try {
+        const $ = cheerio.load(html)
+       const subsBtn = $('.yt-subscription-button-subscriber-count-branded-horizontal');
+       return parseInt(subsBtn[0].attribs['title']);
     } catch (err) {
         console.log(err)
     }
@@ -37,6 +48,16 @@ export async function getInstagramFollowers(html) {
     }
 }
 
+export async function getYoutubeCount() {
+    try {
+        const html = await getHTML(accountConfig.youtubeUrl)
+        const youtubeCount = await getYoutubeFollowers(html)
+        return youtubeCount
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 export async function getInstagramCount() {
     try {
         const html = await getHTML(accountConfig.instagramUlr)
@@ -59,18 +80,27 @@ export async function getTwitterCount() {
 export async function taskRunner() {
     const iCount = await getInstagramCount()
     const tCount = await getTwitterCount()
-    const now = new Date()
-    const currentDay = ('0' + now.getDate()).slice(-2)
-    const currentMonth = ('0' + (now.getMonth() + 1)).slice(-2)
-    const today = `${currentDay}${currentMonth}${now.getFullYear()}`
-    const currentTime = `${now.getHours()}${now.getMinutes()}${now.getSeconds()}`
+    const yCount = await getYoutubeCount()
+
+    const date = new Date()
+    date.toLocaleString('en-GB', {
+        hour: '2-digit',
+        hour12: false,
+        timeZone: 'Europe/London',
+    })
+    const currentDay = ('0' + date.getDate()).slice(-2)
+    const currentMonth = ('0' + (date.getMonth() + 1)).slice(-2)
+    const today = `${currentDay}${currentMonth}${date.getFullYear()}`
+    const currentTime = `${date.getHours()}${date.getMinutes()}${date.getSeconds()}`
+    date.toLocaleString('en-GB', { hour12: false, timeZone: 'Europe/London' })
 
     const params = {
         TableName: 'socialMedia',
         Item: {
-            ID: currentTime,
+            ID: `${today}${currentTime}`,
             twitter: tCount,
             instagram: iCount,
+            youtube:yCount,
             SORT_DATE: today,
             updatedAt: currentTime,
         },
@@ -81,14 +111,11 @@ export async function taskRunner() {
             dynamoDb.put(params, (error, data) => {
                 if (error) {
                     console.log(`createChatMessage ERROR=${error.stack}`)
-                    resolve({
+                    reject({
                         statusCode: 400,
                         error: `Could not create message: ${error.stack}`,
                     })
                 } else {
-                    console.log(
-                        `createChatMessage data=${JSON.stringify(data)}`
-                    )
                     resolve({
                         statusCode: 200,
                         body: JSON.stringify(params.Item),

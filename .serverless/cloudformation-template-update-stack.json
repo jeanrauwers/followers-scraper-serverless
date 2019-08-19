@@ -130,7 +130,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/robotscraper/dev/1565957908818-2019-08-16T12:18:28.818Z/getLikes.zip"
+          "S3Key": "serverless/robotscraper/dev/1566198376163-2019-08-19T07:06:16.163Z/getLikes.zip"
         },
         "FunctionName": "robotscraper-dev-getLikes",
         "Handler": "src/index.getLikes",
@@ -149,14 +149,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "GetLikesLambdaVersion1siC8Iem8wqreFxr2KxjKyYUq7PLTU8KniQ6BiSRfo": {
+    "GetLikesLambdaVersion10rijJTwJYYbeN9lLj9AUbI2M4fVBS2M4hma9ojjslU": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetLikesLambdaFunction"
         },
-        "CodeSha256": "Mf3YKu9hFcFifhaSVOm7gTUlBFUk+MdgVFECoF05hAU="
+        "CodeSha256": "dl8KLzLz6MUNsMGOyiaWvDHDrfmwt1rdUmK4Oxd+0ro="
       }
     },
     "TaskRunnerLambdaFunction": {
@@ -166,7 +166,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/robotscraper/dev/1565957908818-2019-08-16T12:18:28.818Z/taskRunner.zip"
+          "S3Key": "serverless/robotscraper/dev/1566198376163-2019-08-19T07:06:16.163Z/taskRunner.zip"
         },
         "FunctionName": "robotscraper-dev-taskRunner",
         "Handler": "src/lib/scraper.taskRunner",
@@ -185,14 +185,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "TaskRunnerLambdaVersiondt2aM4cnkp31jPjHdpdnZxLu0kplCIZ18TDhLD2lHE": {
+    "TaskRunnerLambdaVersionWWERc9UcxcYCAc5ArNJZOSldC5K8qBVztV0o2YT2Veg": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "TaskRunnerLambdaFunction"
         },
-        "CodeSha256": "innuvnjNIvn149zLkbw5prXFp0FAV7L/Rbo+ttIyo1o="
+        "CodeSha256": "jN+h+snDGxq6HBxCf/0IXxfiSKB76JeJECUrmdOfFPk="
       }
     },
     "ApiGatewayRestApi": {
@@ -425,7 +425,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1565957892904": {
+    "ApiGatewayDeployment1566198361182": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -562,7 +562,7 @@
           "ReadCapacityUnits": 1,
           "WriteCapacityUnits": 1
         },
-        "TableName": "likesapi"
+        "TableName": "socialMedia"
       }
     }
   },
@@ -575,13 +575,13 @@
     "GetLikesLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetLikesLambdaVersion1siC8Iem8wqreFxr2KxjKyYUq7PLTU8KniQ6BiSRfo"
+        "Ref": "GetLikesLambdaVersion10rijJTwJYYbeN9lLj9AUbI2M4fVBS2M4hma9ojjslU"
       }
     },
     "TaskRunnerLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "TaskRunnerLambdaVersiondt2aM4cnkp31jPjHdpdnZxLu0kplCIZ18TDhLD2lHE"
+        "Ref": "TaskRunnerLambdaVersionWWERc9UcxcYCAc5ArNJZOSldC5K8qBVztV0o2YT2Veg"
       }
     },
     "ServiceEndpoint": {
