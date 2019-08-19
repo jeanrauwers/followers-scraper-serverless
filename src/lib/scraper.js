@@ -68,7 +68,7 @@ export async function taskRunner() {
     const params = {
         TableName: 'socialMedia',
         Item: {
-            ID: `${iCount}${tCount}${currentTime}`,
+            ID: currentTime,
             twitter: tCount,
             instagram: iCount,
             SORT_DATE: today,
