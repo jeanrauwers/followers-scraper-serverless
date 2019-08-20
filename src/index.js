@@ -1,5 +1,5 @@
 import AWS from 'aws-sdk'
-import aggregate from './lib/'
+import aggregate from './lib/aggregate'
 const dynamoDb = new AWS.DynamoDB.DocumentClient()
 
 export const getLikes = async () => {
