@@ -1,11 +1,11 @@
 import AWS from 'aws-sdk'
-import aggregate from './lib/aggregate'
+import aggregate from './lib/'
 const dynamoDb = new AWS.DynamoDB.DocumentClient()
 
 export const getLikes = async () => {
     try {
-        const theData = await scanTable('apiSocialMedia')
-        const filteredData = await aggregate(theData)
+        const dataResults = await scanTable('apiSocialMedia')
+        const filteredData = await aggregate(dataResults)
         return await {
             statusCode: 200,
             headers: {

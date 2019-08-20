@@ -1,13 +1,4 @@
-import {timeHelper} from './utils';
-
-function isInLastHour(timestamp) {
-    const defineTimer = 1000 * 60 * 60 * 1 // 1 hour
-
-    if (timeHelper() - timestamp < defineTimer) {
-        return true
-    }
-    return false
-}
+import {timeHelper, isInLastHour} from './utils';
 
 export default function aggregate(scrapes) {
     const aggregateScrapes = [...scrapes]

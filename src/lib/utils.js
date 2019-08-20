@@ -1,11 +1,3 @@
-export function uniqueCount(scrapes) {
-    return scrapes.filter((item, i, arr) => {
-        if (i === 0) return true // keep it, it's the first one
-        const lastItem = arr[i - 1]
-        return !(item.count === lastItem.count)
-    })
-}
-
 export function timeHelper(isToday = false) {
     const date = new Date()
     date.toLocaleString('en-GB', {
@@ -19,4 +11,13 @@ export function timeHelper(isToday = false) {
     const currentTime = `${date.getHours()}${date.getMinutes()}${date.getSeconds()}`
     if (isToday) return today
     return currentTime
+}
+
+export function isInLastHour(timestamp) {
+    const defineTimer = 1000 * 60 * 60 * 1 // 1 hour
+
+    if (timeHelper() - timestamp < defineTimer) {
+        return true
+    }
+    return false
 }
