@@ -2,6 +2,7 @@ import axios from 'axios'
 import cheerio from 'cheerio'
 import accountConfig from './account-configurations'
 import AWS from 'aws-sdk'
+import { timeHelper } from './utils'
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient()
 
@@ -17,8 +18,10 @@ export async function getHTML(url) {
 export async function getYoutubeFollowers(html) {
     try {
         const $ = cheerio.load(html)
-       const subsBtn = $('.yt-subscription-button-subscriber-count-branded-horizontal');
-       return parseInt(subsBtn[0].attribs['title']);
+        const subsBtn = $(
+            '.yt-subscription-button-subscriber-count-branded-horizontal'
+        )
+        return parseInt(subsBtn[0].attribs['title'])
     } catch (err) {
         console.log(err)
     }
@@ -82,18 +85,8 @@ export async function taskRunner() {
     const tCount = await getTwitterCount()
     const yCount = await getYoutubeCount()
 
-    //TODO: Create function to do Date
-    const date = new Date()
-    date.toLocaleString('en-GB', {
-        hour: '2-digit',
-        hour12: false,
-        timeZone: 'Europe/London',
-    })
-    const currentDay = ('0' + date.getDate()).slice(-2)
-    const currentMonth = ('0' + (date.getMonth() + 1)).slice(-2)
-    const today = `${currentDay}${currentMonth}${date.getFullYear()}`
-    const currentTime = `${date.getHours()}${date.getMinutes()}${date.getSeconds()}`
-    date.toLocaleString('en-GB', { hour12: false, timeZone: 'Europe/London' })
+    const today = timeHelper(true)
+    const currentTime = timeHelper()
 
     const params = {
         TableName: 'apiSocialMedia',
@@ -101,7 +94,7 @@ export async function taskRunner() {
             id: `${today}${currentTime}`,
             twitter: tCount,
             instagram: iCount,
-            youtube:yCount,
+            youtube: yCount,
             date: today,
             updatedAt: currentTime,
         },
