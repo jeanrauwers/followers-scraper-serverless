@@ -1,11 +1,13 @@
 import AWS from 'aws-sdk'
-import aggregate from './lib/aggregate'
+import { isFromTheSameDayAndUnderSixHours } from './lib/utils'
 const dynamoDb = new AWS.DynamoDB.DocumentClient()
 
 export const getLikes = async () => {
     try {
         const dataResults = await scanTable('apiSocialMedia')
-        const filteredData = await aggregate(dataResults)
+        const filteredData = await isFromTheSameDayAndUnderSixHours([
+            ...dataResults,
+        ])
         return await {
             statusCode: 200,
             headers: {
