@@ -1,14 +1,10 @@
 export function timeHelper(isToday = false) {
     const date = new Date()
-    date.toLocaleString('en-GB', {
-        hour: '2-digit',
-        hour12: false,
-        timeZone: 'Europe/London',
-    })
+    
     const currentDay = ('0' + date.getDate()).slice(-2)
     const currentMonth = ('0' + (date.getMonth() + 1)).slice(-2)
     const today = `${currentDay}${currentMonth}${date.getFullYear()}`
-    const currentTime = `${date.getHours()}${date.getMinutes()}${date.getSeconds()}`
+    const currentTime = `${('0' + date.getHours()).slice(-2)}${date.getMinutes()}${date.getSeconds()}`
     if (isToday) return today
     return currentTime
 }
@@ -23,6 +19,7 @@ export function isInLastHour(timestamp) {
 
 export function isFromTheSameDayAndUnderSixHours(aggregateScrapes) {
     let result = []
+    console.log(aggregateScrapes)
 
     aggregateScrapes.filter((item, index) => {
         if (item.date === timeHelper(true) && isInLastHour(item.updatedAt))
