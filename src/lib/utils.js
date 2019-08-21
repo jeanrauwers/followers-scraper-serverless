@@ -28,6 +28,7 @@ export function isFromTheSameDayAndUnderSixHours(aggregateScrapes) {
         if (item.date === timeHelper(true) && isInLastHour(item.updatedAt))
             result.push(item)
     })
+    result.sort((a,b) => a.updatedAt - b.updatedAt).reverse()
 
     return result
 }
