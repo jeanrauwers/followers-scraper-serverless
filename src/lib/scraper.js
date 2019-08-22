@@ -103,12 +103,12 @@ export async function taskRunner() {
 
     return await new Promise((resolve, reject) => {
         try {
-            dynamoDb.put(params, (error, data) => {
-                if (error) {
-                    console.log(`createChatMessage ERROR=${error.stack}`)
-                    reject({
+            dynamoDb.put(params, (err, data) => {
+                if (err) {
+                    console.log(`createChatMessage ERROR=${err.stack}`)
+                    resolve({
                         statusCode: 400,
-                        error: `Could not create message: ${error.stack}`,
+                        error: `Could not create message: ${err.stack}`,
                     })
                 } else {
                     resolve({
