@@ -117,7 +117,7 @@ export async function taskRunner() {
                 }
             })
         } catch {
-            err => console.log
+            err => console.log(`createChatMessage ERROR=${err.stack}`)
         }
     })
 }

@@ -9,8 +9,8 @@ export function timeHelper(isToday = false) {
     return currentTime
 }
 
-export function isInLastHour(timestamp) {
-    const defineTimer = 1000 * 60 * 60 * 1 // 1 hour
+export function isInLastSixHours(timestamp) {
+    const defineTimer = 1000 * 60 * 60 * 6// 6 hour
     if (timeHelper() - timestamp < defineTimer) {
         return true
     }
@@ -22,7 +22,7 @@ export function isFromTheSameDayAndUnderSixHours(aggregateScrapes) {
     console.log(aggregateScrapes)
 
     aggregateScrapes.filter((item, index) => {
-        if (item.date === timeHelper(true) && isInLastHour(item.updatedAt))
+        if (item.date === timeHelper(true) && isInLastSixHours(item.updatedAt))
             result.push(item)
     })
     result.sort((a,b) => a.updatedAt - b.updatedAt).reverse()
