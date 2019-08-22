@@ -52,9 +52,9 @@ The scraper lambda works based on CloudWatch schedule that you can define at you
  ]
 }
 
-
-If you need to force to update the data before the cron job you can hit /api/likes/update with a get request and it will trigger the update and return the latest scrape data
+The endpoint has a filter to display only the messages from the last 6 hours and it can be customisable
 
 ```
+### If you need to force to update the data before the cron job you can hit /api/likes/update with a get request and it will trigger the update and return the latest scrape data
 
 Enjoy and have fun!
