@@ -1,6 +1,6 @@
 export function timeHelper(isToday = false) {
     const date = new Date()
-    
+
     const currentDay = ('0' + date.getDate()).slice(-2)
     const currentMonth = ('0' + (date.getMonth() + 1)).slice(-2)
     const today = `${currentDay}${currentMonth}${date.getFullYear()}`
@@ -24,8 +24,7 @@ export function isInLastSixHours(timestamp) {
 
 export function isFromTheSameDayAndUnderSixHours(aggregateScrapes) {
     let result = []
-    console.log(aggregateScrapes)
-
+    
     aggregateScrapes.filter((item, index) => {
         if (item.date === timeHelper(true) && isInLastSixHours(item.updatedAt))
             result.push(item)
