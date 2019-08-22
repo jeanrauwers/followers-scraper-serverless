@@ -18,7 +18,7 @@ provider:
 
 functions:
     getLikes:
-        handler: src/index.getLikes
+        handler: src/lib/getLikes.getLikes
         events:
             - http:
                   path: api/likes
