@@ -39,13 +39,14 @@ export async function getTwitterFollowers(html) {
 
 export async function getInstagramFollowers(html) {
     try {
-        const $ = cheerio.load(html)
-        const dataInString = $('script[type="application/ld+json"]').html()
-        const pageObject = JSON.parse(dataInString)
-        return parseInt(
+        const $ = await cheerio.load(html)
+        const dataInString = await $('script[type="application/ld+json"]').html()
+        const pageObject = await JSON.parse(dataInString)
+        const pageObjToInt = await parseInt(
             pageObject.mainEntityofPage.interactionStatistic
                 .userInteractionCount
         )
+        return pageObjToInt
     } catch (err) {
         console.log(err)
     }
