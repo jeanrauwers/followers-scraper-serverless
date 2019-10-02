@@ -1,11 +1,11 @@
 import AWS from 'aws-sdk'
-import { isFromTheSameDayAndUnderSixHours } from './utils'
+import { isFromSameDay } from './utils'
 const dynamoDb = new AWS.DynamoDB.DocumentClient()
 
 export const getLikes = async () => {
     try {
-        const dataResults = await scanTable('apiSocialMedia')
-        const filteredData = await isFromTheSameDayAndUnderSixHours([
+        const dataResults = await scanTable('SocialMediaApi')
+        const filteredData = await isFromSameDay([
             ...dataResults,
         ])
         return await {

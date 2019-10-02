@@ -2,7 +2,7 @@ import axios from 'axios'
 import cheerio from 'cheerio'
 import accountConfig from './account-configurations'
 import AWS from 'aws-sdk'
-import { timeHelper } from './utils'
+import { isSameDay } from './utils'
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient()
 
@@ -86,11 +86,11 @@ export async function taskRunner() {
     const tCount = await getTwitterCount()
     const yCount = await getYoutubeCount()
 
-    const today = timeHelper(true)
-    const currentTime = timeHelper()
+    const today = isSameDay()
+    const currentTime = isSameDay(true)
 
     const params = {
-        TableName: 'apiSocialMedia',
+        TableName: 'SocialMediaApi',
         Item: {
             id: `${today}${currentTime}`,
             twitter: tCount,

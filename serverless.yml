@@ -63,4 +63,4 @@ resources: # CloudFormation template syntax
                 ProvisionedThroughput:
                     ReadCapacityUnits: 1
                     WriteCapacityUnits: 1
-                TableName: 'apiSocialMedia'
+                TableName: 'SocialMediaApi'
