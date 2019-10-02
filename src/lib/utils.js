@@ -17,11 +17,11 @@ export function isFromSameDay(aggregateScrapes) {
     let result = []
 
     aggregateScrapes.filter((item) => {
-        console.log(item.date, isSameDay())
         if (item.date === isSameDay())
             result.push(item)
     })
-    result.sort((a, b) => a.updatedAt > b.updatedAt)
+
+    result.sort((a, b) => a.updatedAt - b.updatedAt).reverse()
 
     return result
 }
