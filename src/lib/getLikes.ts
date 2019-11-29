@@ -1,6 +1,8 @@
-import AWS from 'aws-sdk'
+import { DynamoDB } from "aws-sdk";
 import { isFromSameDay } from './utils'
-const dynamoDb = new AWS.DynamoDB.DocumentClient()
+
+
+const dynamoDb = new DynamoDB.DocumentClient()
 
 export const getLikes = async () => {
     try {

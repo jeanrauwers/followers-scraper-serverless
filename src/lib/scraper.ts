@@ -1,10 +1,10 @@
 import axios from 'axios'
 import cheerio from 'cheerio'
 import accountConfig from './account-configurations'
-import AWS from 'aws-sdk'
+import { DynamoDB } from "aws-sdk";
 import { isSameDay } from './utils'
 
-const dynamoDb = new AWS.DynamoDB.DocumentClient()
+const dynamoDb = new DynamoDB.DocumentClient()
 
 export async function getHTML(url) {
     try {

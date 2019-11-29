@@ -32,17 +32,12 @@ functions:
                   method: get
                   cors: true
 plugins:
-    - serverless-webpack
     - serverless-offline
+    - serverless-plugin-typescript
     - cheerio
 
 package:
     individually: true
-
-custom:
-    webpack:
-        webpackConfig: ./webpack.config.js
-        includeModules: true
 
 resources: # CloudFormation template syntax
     Resources:
