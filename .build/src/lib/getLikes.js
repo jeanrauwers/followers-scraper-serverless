@@ -35,16 +35,30 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __spreadArrays = (this && this.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+var __spread = (this && this.__spread) || function () {
+    for (var ar = [], i = 0; i < arguments.length; i++) ar = ar.concat(__read(arguments[i]));
+    return ar;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var aws_sdk_1 = require("aws-sdk");
 var utils_1 = require("./utils");
+var axios_1 = require("axios");
 var dynamoDb = new aws_sdk_1.DynamoDB.DocumentClient();
 exports.getLikes = function () { return __awaiter(void 0, void 0, void 0, function () {
     var dataResults, filteredData, err_1;
@@ -55,7 +69,7 @@ exports.getLikes = function () { return __awaiter(void 0, void 0, void 0, functi
                 return [4 /*yield*/, exports.scanTable('SocialMediaApi')];
             case 1:
                 dataResults = _a.sent();
-                return [4 /*yield*/, utils_1.isFromSameDay(__spreadArrays(dataResults))];
+                return [4 /*yield*/, utils_1.isFromSameDay(__spread(dataResults))];
             case 2:
                 filteredData = _a.sent();
                 return [4 /*yield*/, {
@@ -103,4 +117,24 @@ exports.scanTable = function (tableName) { return __awaiter(void 0, void 0, void
         }
     });
 }); };
+function getHTML(url) {
+    return __awaiter(this, void 0, void 0, function () {
+        var html, err_3;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, axios_1.default.get(url)];
+                case 1:
+                    html = (_a.sent()).data;
+                    return [2 /*return*/, html];
+                case 2:
+                    err_3 = _a.sent();
+                    throw new Error(err_3);
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.getHTML = getHTML;
 //# sourceMappingURL=getLikes.js.map

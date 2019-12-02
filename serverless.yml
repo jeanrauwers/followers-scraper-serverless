@@ -32,9 +32,10 @@ functions:
                   method: get
                   cors: true
 plugins:
+    - cheerio
     - serverless-offline
     - serverless-plugin-typescript
-    - cheerio
+    
 
 package:
     individually: true

@@ -1,5 +1,6 @@
 import { DynamoDB } from "aws-sdk";
 import { isFromSameDay } from './utils'
+import axios from 'axios'
 
 
 const dynamoDb = new DynamoDB.DocumentClient()
@@ -34,7 +35,7 @@ export const scanTable = async tableName => {
         Limit: 10,
     }
 
-    let scanResults = []
+    let scanResults: string[] = []
     let items
     try {
         items = await dynamoDb.scan(params).promise()
@@ -44,3 +45,4 @@ export const scanTable = async tableName => {
         console.error(err)
     }
 }
+

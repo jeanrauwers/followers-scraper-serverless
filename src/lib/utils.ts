@@ -1,3 +1,6 @@
+import axios from 'axios'
+
+
 export function isSameDay(isCurrentTime = false) {
     const date = new Date()
 
@@ -14,7 +17,7 @@ export function isSameDay(isCurrentTime = false) {
 }
 
 export function isFromSameDay(aggregateScrapes) {
-    let result = []
+    let result: string[] = []
 
     aggregateScrapes.filter((item) => {
         if (item.date === isSameDay())
@@ -29,4 +32,15 @@ export function isFromSameDay(aggregateScrapes) {
 
 export function sum(a, b) {
     return a + b;
+}
+
+
+export async function getHTML(url: string) {
+    try {
+        const { data: html } = await axios.get(url);
+        return html;
+    }
+    catch (err) {
+        throw new Error(err)
+    }
 }

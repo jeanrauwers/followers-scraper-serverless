@@ -36,39 +36,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var axios_1 = require("axios");
 var cheerio_1 = require("cheerio");
 var account_configurations_1 = require("./account-configurations");
 var aws_sdk_1 = require("aws-sdk");
 var utils_1 = require("./utils");
 var dynamoDb = new aws_sdk_1.DynamoDB.DocumentClient();
-function getHTML(url) {
-    return __awaiter(this, void 0, void 0, function () {
-        var html, err_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, axios_1.default.get(url)];
-                case 1:
-                    html = (_a.sent()).data;
-                    return [2 /*return*/, html];
-                case 2:
-                    err_1 = _a.sent();
-                    console.log(err_1);
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
-            }
-        });
-    });
-}
-exports.getHTML = getHTML;
 function getYoutubeFollowers(html) {
     return __awaiter(this, void 0, void 0, function () {
         var $, subsBtn;
         return __generator(this, function (_a) {
             try {
-                $ = cheerio_1.default.load(html);
+                $ = cheerio_1.load(html);
                 subsBtn = $('.yt-subscription-button-subscriber-count-branded-horizontal');
                 return [2 /*return*/, parseInt(subsBtn[0].attribs['title'])];
             }
@@ -85,7 +63,7 @@ function getTwitterFollowers(html) {
         var $, span;
         return __generator(this, function (_a) {
             try {
-                $ = cheerio_1.default.load(html);
+                $ = cheerio_1.load(html);
                 span = $('[data-nav="followers"] .ProfileNav-value');
                 return [2 /*return*/, span.data('count')];
             }
@@ -99,12 +77,12 @@ function getTwitterFollowers(html) {
 exports.getTwitterFollowers = getTwitterFollowers;
 function getInstagramFollowers(html) {
     return __awaiter(this, void 0, void 0, function () {
-        var $, dataInString, pageObject, pageObjToInt, err_2;
+        var $, dataInString, pageObject, pageObjToInt, err_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 5, , 6]);
-                    return [4 /*yield*/, cheerio_1.default.load(html)];
+                    return [4 /*yield*/, cheerio_1.load(html)];
                 case 1:
                     $ = _a.sent();
                     return [4 /*yield*/, $('script[type="application/ld+json"]').html()];
@@ -119,8 +97,8 @@ function getInstagramFollowers(html) {
                     pageObjToInt = _a.sent();
                     return [2 /*return*/, pageObjToInt];
                 case 5:
-                    err_2 = _a.sent();
-                    console.log(err_2);
+                    err_1 = _a.sent();
+                    console.log(err_1);
                     return [3 /*break*/, 6];
                 case 6: return [2 /*return*/];
             }
@@ -130,12 +108,12 @@ function getInstagramFollowers(html) {
 exports.getInstagramFollowers = getInstagramFollowers;
 function getYoutubeCount() {
     return __awaiter(this, void 0, void 0, function () {
-        var html, youtubeCount, err_3;
+        var html, youtubeCount, err_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 3, , 4]);
-                    return [4 /*yield*/, getHTML(account_configurations_1.default.youtubeUrl)];
+                    return [4 /*yield*/, utils_1.getHTML(account_configurations_1.default.youtubeUrl)];
                 case 1:
                     html = _a.sent();
                     return [4 /*yield*/, getYoutubeFollowers(html)];
@@ -143,8 +121,8 @@ function getYoutubeCount() {
                     youtubeCount = _a.sent();
                     return [2 /*return*/, youtubeCount];
                 case 3:
-                    err_3 = _a.sent();
-                    console.log(err_3);
+                    err_2 = _a.sent();
+                    console.log(err_2);
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -154,12 +132,12 @@ function getYoutubeCount() {
 exports.getYoutubeCount = getYoutubeCount;
 function getInstagramCount() {
     return __awaiter(this, void 0, void 0, function () {
-        var html, instagramCount, err_4;
+        var html, instagramCount, err_3;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 3, , 4]);
-                    return [4 /*yield*/, getHTML(account_configurations_1.default.instagramUlr)];
+                    return [4 /*yield*/, utils_1.getHTML(account_configurations_1.default.instagramUlr)];
                 case 1:
                     html = _a.sent();
                     return [4 /*yield*/, getInstagramFollowers(html)];
@@ -167,8 +145,8 @@ function getInstagramCount() {
                     instagramCount = _a.sent();
                     return [2 /*return*/, instagramCount];
                 case 3:
-                    err_4 = _a.sent();
-                    console.log(err_4);
+                    err_3 = _a.sent();
+                    console.log(err_3);
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -178,12 +156,12 @@ function getInstagramCount() {
 exports.getInstagramCount = getInstagramCount;
 function getTwitterCount() {
     return __awaiter(this, void 0, void 0, function () {
-        var html, twitterCount, err_5;
+        var html, twitterCount, err_4;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 3, , 4]);
-                    return [4 /*yield*/, getHTML(account_configurations_1.default.twitterUrl)];
+                    return [4 /*yield*/, utils_1.getHTML(account_configurations_1.default.twitterUrl)];
                 case 1:
                     html = _a.sent();
                     return [4 /*yield*/, getTwitterFollowers(html)];
@@ -191,8 +169,8 @@ function getTwitterCount() {
                     twitterCount = _a.sent();
                     return [2 /*return*/, twitterCount];
                 case 3:
-                    err_5 = _a.sent();
-                    console.log(err_5);
+                    err_4 = _a.sent();
+                    console.log(err_4);
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
