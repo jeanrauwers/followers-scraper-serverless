@@ -24,7 +24,7 @@ export function isFromSameDay(aggregateScrapes) {
             result.push(item)
     })
 
-    result.sort((a, b) => a.updatedAt - b.updatedAt).reverse()
+    result.sort((a:any , b:any) => a.updatedAt - b.updatedAt).reverse()
 
     return result
 }

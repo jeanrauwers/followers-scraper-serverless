@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build":"tsc",
     "dev": "sls offline start",
-    "deploy": "sls deploy -y"
+    "deploy": "npm run build && sls deploy -y"
   },
   "author": "Jean Rauwers",
   "license": "ISC",
