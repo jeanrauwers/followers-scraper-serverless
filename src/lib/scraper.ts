@@ -1,23 +1,13 @@
-import axios from 'axios'
-import cheerio from 'cheerio'
+import { load } from 'cheerio'
 import accountConfig from './account-configurations'
-import AWS from 'aws-sdk'
-import { isSameDay } from './utils'
+import { DynamoDB } from "aws-sdk";
+import { isSameDay, getHTML } from './utils'
 
-const dynamoDb = new AWS.DynamoDB.DocumentClient()
-
-export async function getHTML(url) {
-    try {
-        const { data: html } = await axios.get(url)
-        return html
-    } catch (err) {
-        console.log(err)
-    }
-}
+const dynamoDb = new DynamoDB.DocumentClient()
 
 export async function getYoutubeFollowers(html) {
     try {
-        const $ = cheerio.load(html)
+        const $ = load(html)
         const subsBtn = $(
             '.yt-subscription-button-subscriber-count-branded-horizontal'
         )
@@ -29,7 +19,7 @@ export async function getYoutubeFollowers(html) {
 
 export async function getTwitterFollowers(html) {
     try {
-        const $ = cheerio.load(html)
+        const $ = load(html)
         const span = $('[data-nav="followers"] .ProfileNav-value')
         return span.data('count')
     } catch (err) {
@@ -39,7 +29,7 @@ export async function getTwitterFollowers(html) {
 
 export async function getInstagramFollowers(html) {
     try {
-        const $ = await cheerio.load(html)
+        const $ = await load(html)
         const dataInString = await $('script[type="application/ld+json"]').html()
         const pageObject = await JSON.parse(dataInString)
         const pageObjToInt = await parseInt(

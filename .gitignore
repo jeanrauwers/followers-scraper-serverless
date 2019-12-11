@@ -65,3 +65,5 @@ obj/
 # Serverless directories
 .serverless
 .webpack
+
+.build
