@@ -1,32 +1,29 @@
 import axios from 'axios'
 
 
-export function isSameDay(isCurrentTime = false) {
+export function getDateAndCurrentTime(isCurrentTime = false) {
     const date = new Date()
 
     const currentDay = ('0' + date.getDate()).slice(-2)
     const currentMonth = ('0' + (date.getMonth() + 1)).slice(-2)
-    const today = `${currentDay}${currentMonth}${date.getFullYear()}`
+    const today = `${date.getFullYear()}${currentMonth}${currentDay}`
     const hour = ('0' + date.getHours()).slice(-2)
     const minutes = ('0' + date.getMinutes()).slice(-2)
     const seconds = ('0' + date.getSeconds()).slice(-2)
     const currentTime = `${hour}${minutes}${seconds}`
-
     if (isCurrentTime) return currentTime
-    return today
+    return parseInt(today)
 }
 
 export function isFromSameDay(aggregateScrapes) {
-    let result: string[] = []
+    let result: string[] = aggregateScrapes
 
-    aggregateScrapes.filter((item) => {
-        if (item.date === isSameDay())
-            result.push(item)
+    result.sort((a: any, b: any) => {
+        if (a.date === b.date) return parseInt(a.UpdatedAt) - parseInt(b.UpdatedAt)
+        return a.date - b.date
     })
 
-    result.sort((a:any , b:any) => a.updatedAt - b.updatedAt).reverse()
-
-    return result
+    return result.reverse()
 }
 
 

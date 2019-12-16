@@ -1,13 +1,12 @@
 import { DynamoDB } from "aws-sdk";
 import { isFromSameDay } from './utils'
-import axios from 'axios'
 
 
 const dynamoDb = new DynamoDB.DocumentClient()
 
 export const getLikes = async () => {
     try {
-        const dataResults = await scanTable('SocialMediaApi')
+        const dataResults = await scanTable('followersApi')
         const filteredData = await isFromSameDay([
             ...dataResults,
         ])

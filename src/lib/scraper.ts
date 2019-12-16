@@ -1,7 +1,7 @@
 import { load } from 'cheerio'
 import accountConfig from './account-configurations'
 import { DynamoDB } from "aws-sdk";
-import { isSameDay, getHTML } from './utils'
+import { getDateAndCurrentTime, getHTML } from './utils'
 
 const dynamoDb = new DynamoDB.DocumentClient()
 
@@ -76,18 +76,18 @@ export async function taskRunner() {
     const tCount = await getTwitterCount()
     const yCount = await getYoutubeCount()
 
-    const today = isSameDay()
-    const currentTime = isSameDay(true)
+    const today = getDateAndCurrentTime()
+    const currentTime = getDateAndCurrentTime(true)
 
     const params = {
-        TableName: 'SocialMediaApi',
+        TableName: 'followersApi',
         Item: {
-            id: `${today}${currentTime}`,
-            twitter: tCount,
-            instagram: iCount,
-            youtube: yCount,
-            date: today,
-            updatedAt: currentTime,
+            ID: `${today}${currentTime}`,
+            Twitter: tCount,
+            Instagram: iCount,
+            Youtube: yCount,
+            Date: getDateAndCurrentTime(),
+            UpdatedAt: currentTime,
         },
     }
 
