@@ -6,7 +6,7 @@ const dynamoDb = new DynamoDB.DocumentClient()
 
 export const getLikes = async () => {
     try {
-        const dataResults = await scanTable('followersApi')
+        const dataResults = await scanTable('followersLikeApi')
         const filteredData = await isFromSameDay([
             ...dataResults,
         ])

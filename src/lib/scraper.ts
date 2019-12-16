@@ -80,7 +80,7 @@ export async function taskRunner() {
     const currentTime = getDateAndCurrentTime(true)
 
     const params = {
-        TableName: 'followersApi',
+        TableName: 'followersLikeApi',
         Item: {
             ID: `${today}${currentTime}`,
             Twitter: tCount,

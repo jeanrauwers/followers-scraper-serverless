@@ -59,4 +59,4 @@ resources: # CloudFormation template syntax
                 ProvisionedThroughput:
                     ReadCapacityUnits: 1
                     WriteCapacityUnits: 1
-                TableName: 'followersApi'
+                TableName: 'followersLikeApi'
