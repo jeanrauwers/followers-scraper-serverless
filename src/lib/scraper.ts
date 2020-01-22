@@ -82,11 +82,11 @@ export async function taskRunner() {
     const params = {
         TableName: 'followersLikeApi',
         Item: {
-            ID: `${today}${currentTime}`,
+            id: `${today}${currentTime}`,
             Twitter: tCount,
             Instagram: iCount,
             Youtube: yCount,
-            Date: getDateAndCurrentTime(),
+            date: getDateAndCurrentTime().toString(),
             UpdatedAt: currentTime,
         },
     }
