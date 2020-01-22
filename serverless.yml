@@ -33,8 +33,8 @@ functions:
                   cors: true
 plugins:
     - cheerio
-    - serverless-offline
     - serverless-plugin-typescript
+    - serverless-offline
     
 
 package:

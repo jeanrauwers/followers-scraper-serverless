@@ -1,14 +1,14 @@
-import { DynamoDB } from "aws-sdk";
+import { DynamoDB } from 'aws-sdk';
 import { isFromSameDay } from './utils'
 
 
-const dynamoDb = new DynamoDB.DocumentClient()
+const dynamoDb = new DynamoDB();
 
 export const getLikes = async () => {
     try {
         const dataResults = await scanTable('followersLikeApi')
         const filteredData = await isFromSameDay([
-            ...dataResults,
+        dataResults,
         ])
         return await {
             statusCode: 200,
