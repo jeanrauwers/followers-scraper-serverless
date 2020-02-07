@@ -11,11 +11,13 @@ export function getDateAndCurrentTime(isCurrentTime = false) {
     const minutes = ('0' + date.getMinutes()).slice(-2)
     const seconds = ('0' + date.getSeconds()).slice(-2)
     const currentTime = `${hour}${minutes}${seconds}`
+
     if (isCurrentTime) return currentTime
+
     return parseInt(today)
 }
 
-export function isFromSameDay(aggregateScrapes) {
+export function isFromSameDay(aggregateScrapes: any) {
     let result: string[] = aggregateScrapes
 
     result.sort((a: any, b: any) => {
@@ -25,12 +27,6 @@ export function isFromSameDay(aggregateScrapes) {
 
     return result.reverse()
 }
-
-
-export function sum(a, b) {
-    return a + b;
-}
-
 
 export async function getHTML(url: string) {
     try {

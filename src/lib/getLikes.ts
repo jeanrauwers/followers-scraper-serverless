@@ -1,6 +1,5 @@
 import { DynamoDB } from 'aws-sdk';
 import { isFromSameDay } from './utils'
-import { getInstagramCount } from './scraper';
 
 
 
@@ -17,7 +16,7 @@ const dynamoDb = new DynamoDB();
 
 export const getLikes = async () => {
     try {
-        const dataResults = await scanTable('followersLikeApi')
+        const dataResults: any = await scanTable('followersLikeApi')
         const filteredData = await isFromSameDay([...dataResults,
         ])
 
@@ -40,17 +39,18 @@ export const getLikes = async () => {
     }
 }
 export const scanTable = async (tableName: string) => {
-    const params = {
+    const params: any = {
         TableName: tableName,
-        Limit: 10,
+        Limit: 10
     }
 
     let scanResults: resultObject[] = []
-    let result: AsyncIterable<any>
+    let result: any
     try {
         result = await dynamoDb.scan(params).promise()
 
-        result.Items.forEach(item => {
+
+        result.Items.forEach((item: any) => {
             let itemObject = {
                 twitter: item.Twitter.N,
                 instagram: item.Instagram.N,
