@@ -1,16 +1,4 @@
 import axios from 'axios'
-import moment from 'moment'
-
-
-export function getDateAndCurrentTime(isCurrentTime = false) {
-    const date: Date = new Date()
-    let now = moment();
-    const today = moment(date).format('MM/DD/YYYY')
-
-    if (isCurrentTime) return now
-
-    return today
-}
 
 export function isFromSameDay(aggregateScrapes: any) {
     let result: string[] = aggregateScrapes

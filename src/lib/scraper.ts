@@ -1,7 +1,11 @@
 import { load } from 'cheerio'
+import moment from 'moment'
+import uniqid from 'uniqid';
+
+
 import accountConfig from './account-configurations'
 import { DynamoDB } from "aws-sdk";
-import { getDateAndCurrentTime, getHTML } from './utils'
+import { getHTML } from './utils'
 
 const dynamoDb = new DynamoDB.DocumentClient()
 
@@ -72,20 +76,22 @@ export async function getTwitterCount() {
 }
 
 export async function taskRunner() {
+    const date: Date = new Date()
+    let now = moment();
+
     const iCount = await getInstagramCount()
     const tCount = await getTwitterCount()
     const yCount = await getYoutubeCount()
-    const currentTime = getDateAndCurrentTime(true)
 
     const params = {
         TableName: 'followersLikeApi',
         Item: {
-            id: `${currentTime}`,
+            id: uniqid(),
             Twitter: tCount,
             Instagram: iCount,
             Youtube: yCount,
-            date: getDateAndCurrentTime(),
-            UpdatedAt: currentTime,
+            date: moment(date).format('MM/DD/YYYY'),
+            UpdatedAt: now,
         },
     }
 
