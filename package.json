@@ -6,19 +6,19 @@
   "scripts": {
     "build": "tsc",
     "dev": "sls offline start",
-    "deploy": "npm run build && sls deploy -y"
+    "deploy": "npm run build && sls deploy --verbose"
   },
   "author": "Jean Rauwers",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^13.1.8",
-    "serverless": "^1.61.2",
+    "@types/node": "^13.7.0",
+    "serverless": "^1.63.0",
     "serverless-dynamodb-local": "^1.0.2",
     "serverless-plugin-typescript": "^1.1.9",
     "typescript": "^3.7.5"
   },
   "dependencies": {
-    "aws-sdk": "^2.607.0",
+    "aws-sdk": "^2.613.0",
     "axios": "^0.19.1",
     "cheerio": "^1.0.0-rc.3",
     "node-cron": "^2.0.3",
