@@ -5,7 +5,7 @@
     ],
     "target": "es2017",
     "module": "commonjs",
-    "outDir": "./dist",
+    "outDir": "./.build",
     "strict": true,
     "baseUrl": "./",
     "typeRoots": [
