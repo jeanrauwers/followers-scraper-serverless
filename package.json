@@ -18,6 +18,7 @@
     "typescript": "^3.7.5"
   },
   "dependencies": {
+    "@types/cheerio": "^0.22.16",
     "aws-sdk": "^2.613.0",
     "axios": "^0.19.1",
     "cheerio": "^1.0.0-rc.3",

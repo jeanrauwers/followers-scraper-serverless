@@ -5,7 +5,7 @@ import { getDateAndCurrentTime, getHTML } from './utils'
 
 const dynamoDb = new DynamoDB.DocumentClient()
 
-export async function getYoutubeFollowers(html) {
+export async function getYoutubeFollowers(html: any) {
     try {
         const $ = load(html)
         const subsBtn = $(
@@ -17,7 +17,7 @@ export async function getYoutubeFollowers(html) {
     }
 }
 
-export async function getTwitterFollowers(html) {
+export async function getTwitterFollowers(html: any) {
     try {
         const $ = load(html)
         const span = $('[data-nav="followers"] .ProfileNav-value')
@@ -27,10 +27,10 @@ export async function getTwitterFollowers(html) {
     }
 }
 
-export async function getInstagramFollowers(html) {
+export async function getInstagramFollowers(html: any) {
     try {
         const $ = await load(html)
-        const dataInString = await $('script[type="application/ld+json"]').html()
+        const dataInString: any = await $('script[type="application/ld+json"]').html()
         const pageObject = await JSON.parse(dataInString)
         const pageObjToInt = await parseInt(
             pageObject.mainEntityofPage.interactionStatistic
@@ -108,7 +108,7 @@ export async function taskRunner() {
                 }
             })
         } catch {
-            err => console.log(`createChatMessage ERROR=${err.stack}`)
+            (err: any) => console.log(`createChatMessage ERROR=${err.stack}`)
         }
     })
 }
