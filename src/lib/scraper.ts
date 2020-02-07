@@ -75,18 +75,16 @@ export async function taskRunner() {
     const iCount = await getInstagramCount()
     const tCount = await getTwitterCount()
     const yCount = await getYoutubeCount()
-
-    const today = getDateAndCurrentTime()
     const currentTime = getDateAndCurrentTime(true)
 
     const params = {
         TableName: 'followersLikeApi',
         Item: {
-            id: `${today}${currentTime}`,
+            id: `${currentTime}`,
             Twitter: tCount,
             Instagram: iCount,
             Youtube: yCount,
-            date: getDateAndCurrentTime().toString(),
+            date: getDateAndCurrentTime(),
             UpdatedAt: currentTime,
         },
     }

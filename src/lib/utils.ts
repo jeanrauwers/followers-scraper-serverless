@@ -1,22 +1,15 @@
 import axios from 'axios'
-import * as moment from 'moment';
-
+import moment from 'moment'
 
 
 export function getDateAndCurrentTime(isCurrentTime = false) {
-    const date = new Date()
+    const date: Date = new Date()
+    let now = moment();
+    const today = moment(date).format('MM/DD/YYYY')
 
-    const currentDay = ('0' + date.getDate()).slice(-2)
-    const currentMonth = ('0' + (date.getMonth() + 1)).slice(-2)
-    const today = `${date.getFullYear()}${currentMonth}${currentDay}`
-    const hour = ('0' + date.getHours()).slice(-2)
-    const minutes = ('0' + date.getMinutes()).slice(-2)
-    const seconds = ('0' + date.getSeconds()).slice(-2)
-    const currentTime = `${hour}${minutes}${seconds}`
+    if (isCurrentTime) return now
 
-    if (isCurrentTime) return currentTime
-
-    return parseInt(today)
+    return today
 }
 
 export function isFromSameDay(aggregateScrapes: any) {
