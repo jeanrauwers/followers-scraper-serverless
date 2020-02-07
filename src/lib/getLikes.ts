@@ -52,11 +52,11 @@ export const scanTable = async (tableName: string) => {
 
         result.Items.forEach((item: any) => {
             let itemObject = {
-                twitter: item.Twitter.N,
-                instagram: item.Instagram.N,
-                youtube: item.Youtube.N,
-                date: item.date.S,
-                updateAt: item.UpdatedAt.S
+                twitter: item.Twitter?.N,
+                instagram: item.Instagram?.N,
+                youtube: item.Youtube?.N,
+                date: item.date?.S,
+                updateAt: item.UpdatedAt?.S
             }
             scanResults.push(itemObject)
         })
