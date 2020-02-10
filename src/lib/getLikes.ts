@@ -45,8 +45,6 @@ export const scanTable = async (tableName: string) => {
     let result: any
     try {
         result = await dynamoDb.scan(params).promise()
-
-
         result.Items.forEach((item: any) => {
             let itemObject = {
                 twitter: item.Twitter?.N,
