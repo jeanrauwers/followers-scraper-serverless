@@ -9,15 +9,13 @@ interface resultObject {
     updateAt: string;
 }
 
-
 const dynamoDb = new DynamoDB();
-
 
 export const getLikes = async (event: any) => {
     try {
         const dataResults: any = await scanTable('followersLikeApi')
-        const { sameday } = event.queryStringParameters
-        const filteredData = await sortByDate([...dataResults])
+        const sortedData = await sortByDate([...dataResults])
+        // const { sameday } = event.queryStringParameters
 
         return await {
             statusCode: 200,
@@ -27,7 +25,7 @@ export const getLikes = async (event: any) => {
             },
             body: JSON.stringify(
                 {
-                    data: filteredData,
+                    data: sortedData,
                 },
                 null,
                 2
