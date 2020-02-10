@@ -1,6 +1,6 @@
 ![image003](https://user-images.githubusercontent.com/10606291/57485195-f3ad4c80-72a2-11e9-98cc-46be69d53de2.png)
 
-## Followers Scraper App with Node.js on AWS Serverless - open source
+## Followers Scraper App on AWS Serverless Lambda
 
 #### Supports YouTube, Twitter and Instagram Followers 
 
@@ -24,10 +24,11 @@ Run a single API on local.
 ``` bash
 $ npm run dev
 ```
-You need to have your own [aws-cli](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html) with your credentials configured and than you can run $npm run deploy  to deploy the lambda to AWS
+You need to have your own [aws-cli](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html) with your credentials configured and than you can run $npm run deploy  to deploy the lambda to AWS.
+
+You can create your creditials on IAM panel, remember to provide the right access to your user so you can write to S3 Buckets.
 
 The scraper lambda works based on CloudWatch schedule that you can define at your AWS console as a cron job.
-
 
 
 ### Data is returned on /api/likes end point on the following format :
