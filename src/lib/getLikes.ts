@@ -1,5 +1,5 @@
 import { DynamoDB } from 'aws-sdk';
-import { isFromSameDay } from './utils'
+import { sortByDate } from './utils'
 
 interface resultObject {
     twitter: Number;
@@ -12,11 +12,12 @@ interface resultObject {
 
 const dynamoDb = new DynamoDB();
 
-export const getLikes = async () => {
+
+export const getLikes = async (event: any) => {
     try {
         const dataResults: any = await scanTable('followersLikeApi')
-        const filteredData = await isFromSameDay([...dataResults,
-        ])
+        const { sameday } = event.queryStringParameters
+        const filteredData = await sortByDate([...dataResults])
 
         return await {
             statusCode: 200,

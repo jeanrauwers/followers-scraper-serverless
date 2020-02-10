@@ -1,14 +1,12 @@
 import axios from 'axios'
+import moment from 'moment'
 
-export function isFromSameDay(aggregateScrapes: any) {
+
+export function sortByDate(aggregateScrapes: any) {
     let result: string[] = aggregateScrapes
-
-    result.sort((a: any, b: any) => {
-        if (a.date === b.date) return parseInt(a.UpdatedAt) - parseInt(b.UpdatedAt)
-        return a.date - b.date
-    })
-
-    return result.reverse()
+    result.sort((a: any, b: any) => moment(a.date).unix() - moment(b.date).unix()).reverse()
+    
+    return result
 }
 
 export async function getHTML(url: string) {
