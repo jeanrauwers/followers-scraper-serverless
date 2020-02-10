@@ -1,11 +1,10 @@
 import { load } from 'cheerio'
-import moment from 'moment'
-import uniqid from 'uniqid';
-
-
-import accountConfig from './account-configurations'
 import { DynamoDB } from "aws-sdk";
 import { getHTML } from './utils'
+
+import moment from 'moment'
+import uniqid from 'uniqid';
+import accountConfig from './account-configurations'
 
 const dynamoDb = new DynamoDB.DocumentClient()
 

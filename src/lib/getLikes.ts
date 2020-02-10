@@ -1,8 +1,6 @@
 import { DynamoDB } from 'aws-sdk';
 import { isFromSameDay } from './utils'
 
-
-
 interface resultObject {
     twitter: Number;
     instagram: Number;
