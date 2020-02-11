@@ -34,27 +34,28 @@ The scraper lambda works based on CloudWatch schedule that you can define at you
 ### Data is returned on /api/likes end point on the following format :
 
 ``` json {
-}
+{
     "data": [
-    {
-        "twitter": 270,
-        "date": "22082019",
-        "id": "22082019082234",
-        "youtube": 157,
-        "updatedAt": "082234"
-    },
-    {
-        "twitter": 270,
-        "date": "22082019",
-        "id": "22082019080234",
-        "youtube": 157,
-        "updatedAt": "080234"
-    }
- ]
+        {
+        "twitter": "307",
+        "instagram": "3895",
+        "youtube": "389",
+        "date": "11/02/2020"
+        },
+        {
+        "twitter": "308",
+        "instagram": "3896",
+        "youtube": "389",
+        "date": "11/02/2020"
+        },
+        {
+        "twitter": "308",
+        "instagram": "3896",
+        "youtube": "389",
+        "date": "10/02/2020"
+        }
+    ]
 }
-
-The endpoint has a filter to display only the messages from the last 6 hours and it can be customisable
-
 ```
 ### If you need to force to update the data before the cron job you can hit /api/likes/update with a get request and it will trigger the update and return the latest scrape data
 
