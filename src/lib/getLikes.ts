@@ -1,5 +1,6 @@
 import { DynamoDB } from 'aws-sdk';
 import { sortByDate } from './utils'
+import moment = require('moment');
 
 interface resultObject {
     twitter: Number;

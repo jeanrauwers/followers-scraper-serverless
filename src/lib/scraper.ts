@@ -73,8 +73,7 @@ export async function getTwitterCount() {
         console.log(err)
     }
 }
-
-export async function taskRunner() {
+const scrapeFetcher = async () => {
     const date: Date = new Date()
     let now = moment();
 
@@ -82,21 +81,25 @@ export async function taskRunner() {
     const tCount = await getTwitterCount()
     const yCount = await getYoutubeCount()
 
-    const params = {
+    const response = {
         TableName: 'followersLikeApi',
         Item: {
             id: uniqid(),
             Twitter: tCount,
             Instagram: iCount,
             Youtube: yCount,
-            date: moment(date).format('MM/DD/YYYY'),
+            date: moment(date).format('DD/MM/YYYY'),
             UpdatedAt: now,
         },
     }
 
+    return response
+}
+
+const taskResponder = (response: any) => {
     return new Promise((resolve, reject) => {
         try {
-            dynamoDb.put(params, (err, data) => {
+            dynamoDb.put(response, (err, data) => {
                 if (err) {
                     console.log(`createChatMessage ERROR=${err.stack}`)
                     resolve({
@@ -106,7 +109,7 @@ export async function taskRunner() {
                 } else {
                     resolve({
                         statusCode: 200,
-                        body: JSON.stringify(params.Item),
+                        body: JSON.stringify(response.Item),
                     })
                 }
             })
@@ -114,4 +117,10 @@ export async function taskRunner() {
             (err: any) => console.log(`createChatMessage ERROR=${err.stack}`)
         }
     })
-    }
+}
+
+export async function taskRunner() {
+    return scrapeFetcher()
+        .then(data => taskResponder(data))
+        .catch(err => console.error(err))
+}
