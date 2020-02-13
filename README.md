@@ -1,6 +1,6 @@
 ![image003](https://user-images.githubusercontent.com/10606291/57485195-f3ad4c80-72a2-11e9-98cc-46be69d53de2.png)
 
-## Followers Scraper App on AWS Serverless Lambda
+## Followers Scraper API on AWS Serverless Lambda
 
 #### Supports YouTube, Twitter and Instagram Followers 
 
