@@ -1,4 +1,4 @@
-import accountConfig from './account-configurations'
+import { accountConfig } from '../config/account-configurations'
 import { getYoutubeFollowers, getInstagramFollowers, getTwitterFollowers } from './followers-scraper'
 import { getHTML } from './utils'
 

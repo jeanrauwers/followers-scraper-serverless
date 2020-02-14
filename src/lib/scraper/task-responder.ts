@@ -1,5 +1,4 @@
 import { DynamoDB } from "aws-sdk";
-
 const dynamoDb = new DynamoDB.DocumentClient()
 
 export const taskResponder = (response: any) => {
@@ -15,7 +14,7 @@ export const taskResponder = (response: any) => {
                 } else {
                     resolve({
                         statusCode: 200,
-                        body: JSON.stringify(response.Item),
+                        body: JSON.stringify(response),
                     })
                 }
             })

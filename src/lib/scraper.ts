@@ -1,5 +1,5 @@
-import { taskResponder } from './task-responder'
-import { scrapeFetcher } from './scraper-fetcher'
+import { taskResponder } from './scraper/task-responder'
+import { scrapeFetcher } from './scraper/scraper-fetcher'
 
 export async function taskRunner() {
     return scrapeFetcher()
