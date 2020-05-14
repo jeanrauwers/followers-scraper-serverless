@@ -3,13 +3,13 @@ import { tableName } from '../config/account-configurations'
 
 const dynamoDb = new DynamoDB;
 
-export const tableScanner = async () => {
+export const tableScanner = async (): Promise<object[]> => {
     const params = {
         TableName: tableName,
         Limit: 20
     }
 
-    const scanResults: any[] = []
+    const scanResults: object[] = []
 
     const result = await dynamoDb.scan(params).promise()
     result.Items?.forEach((item: any) => {
@@ -19,7 +19,6 @@ export const tableScanner = async () => {
             instagram: item.Instagram?.N,
             youtube: item.Youtube?.N,
             date: item.date?.S,
-            updateAt: item.UpdatedAt?.S
         }
         scanResults.push(itemObject)
     })

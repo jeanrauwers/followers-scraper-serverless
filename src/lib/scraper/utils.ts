@@ -1,10 +1,13 @@
 import axios from 'axios'
-import moment from 'moment'
 
+export function sortByDate(aggregateScrapes: object[]): object[] {
+    const response = aggregateScrapes.sort((a: any, b: any) => {
+        a = a.date.split('/');
+        b = b.date.split('/');
+        return a[2] - b[2] || a[1] - b[1] || a[0] - b[0];
+    });
 
-export async function sortByDate(aggregateScrapes: any) {
-    const data: any[] = aggregateScrapes
-    return await data.sort((a: any, b: any) => moment(a.date).unix() - moment(b.date).unix()).reverse()
+    return response.reverse()
 }
 
 export async function getHTML(url: string) {

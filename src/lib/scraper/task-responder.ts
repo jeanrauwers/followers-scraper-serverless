@@ -2,6 +2,7 @@ import { DynamoDB } from "aws-sdk";
 const dynamoDb = new DynamoDB.DocumentClient()
 
 export const taskResponder = (response: any) => {
+    console.log(response)
     return new Promise((resolve, reject) => {
         try {
             dynamoDb.put(response, (err, data) => {

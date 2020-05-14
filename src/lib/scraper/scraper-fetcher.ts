@@ -4,8 +4,7 @@ import { getYoutubeCount, getInstagramCount, getTwitterCount } from './likes-fet
 
 export const scrapeFetcher = async () => {
     const date: Date = new Date()
-    let now = moment();
-
+    
     const iCount = await getInstagramCount()
     const tCount = await getTwitterCount()
     const yCount = await getYoutubeCount()
@@ -18,7 +17,6 @@ export const scrapeFetcher = async () => {
             Instagram: iCount,
             Youtube: yCount,
             date: moment(date).format('DD/MM/YYYY'),
-            UpdatedAt: now,
         },
     }
 

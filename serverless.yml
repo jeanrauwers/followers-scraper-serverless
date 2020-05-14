@@ -35,7 +35,10 @@ plugins:
     - cheerio
     - serverless-plugin-typescript
     - serverless-offline
-    
+custom:
+  serverless-offline:
+    useChildProcesses: true
+
 
 package:
     individually: true
