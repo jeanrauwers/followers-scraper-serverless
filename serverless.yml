@@ -2,7 +2,7 @@ service: socialmediascraper
 
 provider:
     name: aws
-    runtime: nodejs8.10
+    runtime: nodejs12.x
     region: eu-west-2
     iamRoleStatements: # permissions for all of your functions can be set here
         - Effect: Allow
@@ -43,7 +43,7 @@ custom:
 package:
     individually: true
 
-resources: # CloudFormation template syntax
+resources: # CloudFormation
     Resources:
         likesapi:
             Type: 'AWS::DynamoDB::Table'
